@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
 import mainPicture from '../assets/reg-chel.jpg';
 import InputForm from './InputForm';
 import mailIco from '../assets/mail-ico.svg';
@@ -14,33 +13,36 @@ const state = {
   hideIco,
   placeholderEmail: 'Email',
   placeholderPassword: 'Password',
+  placeholderPasswordReplay: 'Password replay',
+
   labelEmail: 'Enter your email',
   labelPassword: 'Enter your password',
+  labelReplay: 'Repeat your password without errors',
 };
 
-const LoginBody: React.FC<Props> = (props) => {
+const SignupBody: React.FC<Props> = (props) => {
   return (
     <Body>
       <Form>
-        <FormTitle>Log In</FormTitle>
-        <InputForm
-          src={state.mailIco}
+        <FormTitle>Sign Up</FormTitle>
+        <InputForm src={state.mailIco}
           placeholder={state.placeholderEmail}
-          label={state.labelEmail}
-        />
-        <InputForm
-          src={state.hideIco}
+          label={state.labelEmail}/>
+        <InputForm src={state.hideIco}
           placeholder={state.placeholderPassword}
-          label={state.labelPassword} />
-        <Links to="#">Log in</Links>
+          label={state.labelPassword}/>
+        <InputForm src={state.hideIco}
+          placeholder={state.placeholderPasswordReplay}
+          label={state.labelReplay}/>
+        <Links to="#">Sign Up</Links>
       </Form>
 
-      <Image src={mainPicture} />
+      <Image src={mainPicture}/>
     </Body>
   );
 };
 
-export default LoginBody;
+export default SignupBody;
 
 const Body = styled.div`
   display: flex;

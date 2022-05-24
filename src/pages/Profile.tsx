@@ -1,18 +1,18 @@
 import React from 'react';
 import Header from '../components/Header';
+import ProfileBody from '../components/ProfileBody';
 import Footer from '../components/Footer';
-import HomeBody from '../components/HomeBody';
 
 type Props = {};
 
-const Home: React.FC<Props> = (props) => {
+const Profile: React.FC<Props> = (props) => {
   return (
     <div>
       <Header link={'../login'}/>
-      <HomeBody />
+      <ProfileBody />
       <Footer />
     </div>
   );
 };
 
-export default Home;
+export default Profile;

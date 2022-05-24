@@ -8,43 +8,41 @@ type Props = {
 }
 
 const InputForm: React.FC<Props> = (props) => {
-  return(
-
-  <FormWrapper>
+  return (
+    <FormWrapper>
       <InputWrapper>
-          <FormIco src={props.src}/>
-          <Input type="text" id="input-password" placeholder={props.placeholder}/>
+        <FormIco src={props.src}/>
+        <Input type="text" id="input-password" placeholder={props.placeholder}/>
       </InputWrapper>
       <InputLabel className="form-label">{props.label}</InputLabel>
-  </FormWrapper>
+    </FormWrapper>
+  );
+};
 
-    )
-  }
+export default InputForm;
 
-export default InputForm
-
-
-const FormWrapper = styled.div `
+const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-`
+`;
 
-const InputWrapper = styled.div `
+const InputWrapper = styled.div`
   display: flex;
   position: relative;
   width: 100%;
-`
+`;
 
-const FormIco = styled.img `
+const FormIco = styled.img`
   position: absolute;
   width: 24px;
   height: 24px;
   z-index: 2;
   top: 20px;
   left:24px;
-`
-const Input = styled.input `
+`;
+
+const Input = styled.input`
   position: relative;
   width: 413px;
   height: 24px;
@@ -63,8 +61,9 @@ const Input = styled.input `
   line-height: 28px;
   letter-spacing: 0.75px;
   color: black;
-`
-const InputLabel = styled.label `
+`;
+
+const InputLabel = styled.label`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -76,4 +75,4 @@ const InputLabel = styled.label `
   letter-spacing: 0.75px;
   color: #344966;
   margin-top: 9px;
-`
+`;

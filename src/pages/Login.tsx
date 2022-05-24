@@ -1,20 +1,18 @@
-import React from "react";
+import React from 'react';
 import Header from '../components/Header';
 import LoginBody from '../components/LoginBody';
 import Footer from '../components/Footer';
 
-type Props = {
-
-}
+type Props = {};
 
 const Login: React.FC<Props> = (props) => {
   return (
     <div>
-      <Header />
+      <Header link="../signup"/>
       <LoginBody />
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

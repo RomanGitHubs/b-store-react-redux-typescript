@@ -1,18 +1,18 @@
 import React from 'react';
 import Header from '../components/Header';
+import LoginBody from '../components/LoginBody';
 import Footer from '../components/Footer';
-import HomeBody from '../components/HomeBody';
 
 type Props = {};
 
-const Home: React.FC<Props> = (props) => {
+const Cart: React.FC<Props> = (props) => {
   return (
     <div>
-      <Header link={'../login'}/>
-      <HomeBody />
+      <Header link="../signup"/>
+      <LoginBody />
       <Footer />
     </div>
   );
 };
 
-export default Home;
+export default Cart;
