@@ -9,7 +9,6 @@ const Cart: React.FC<Props> = (props) => {
   return (
     <div>
       <Header link="../signup"/>
-      <LoginBody />
       <Footer />
     </div>
   );

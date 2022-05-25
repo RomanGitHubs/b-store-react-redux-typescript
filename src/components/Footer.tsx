@@ -23,9 +23,7 @@ const Footer: React.FC<Props> = (props) => {
         </FooterColumn>
         <FooterColumn>
           <Paragraph>6391 Elgin St. Celina, Delaware 10299</Paragraph>
-          <Map>
-            <img alt='' src={map}/>
-          </Map>
+          <Map src={map} />
         </FooterColumn>
       </Foot>
     </FooterWrapper>
@@ -36,6 +34,7 @@ export default Footer;
 
 const FooterWrapper = styled.footer`
   background-color: #0D1821;
+  margin-top: auto;
 `;
 
 const Foot = styled.div`
@@ -66,9 +65,12 @@ const Paragraph = styled.p`
   margin: 0 0 5px;
 `;
 
-const Map = styled.div`
-  width: 413px;
-  height: 160px;
+const Map = styled.img`
+  display: flex;
+  max-width: 413px;
+  max-height: 160px;
+  width: 100%;
+  height: 100%;
 `;
 
 const Links = styled(Link)`

@@ -5,6 +5,7 @@ import bannerGirl from '../assets/banner-girl.png';
 
 type Props = {};
 
+
 const Banner:React.FC<Props> = (props) => {
   return (
     <Body>

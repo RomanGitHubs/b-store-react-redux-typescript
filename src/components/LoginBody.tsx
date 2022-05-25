@@ -1,13 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useLocation,
+  Navigate,
+  Outlet,
+} from 'react-router-dom';
 import styled from 'styled-components';
 
 import mainPicture from '../assets/reg-chel.jpg';
 import InputForm from './InputForm';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
-
-type Props = {};
+import { useAuth } from '../utils/AuthProvider';
 
 const state = {
   mailIco,
@@ -18,10 +25,27 @@ const state = {
   labelPassword: 'Enter your password',
 };
 
-const LoginBody: React.FC<Props> = (props) => {
+const navigate = useNavigate();
+const auth = useAuth();
+
+const from = '/';
+
+function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+
+  const formData = new FormData(event.currentTarget);
+  const username = formData.get('username') as string;
+
+  auth.signin(username, () => {
+    navigate(from, { replace: true });
+  });
+}
+
+const LoginBody: React.FC = (props) => {
   return (
     <Body>
-      <Form>
+      <Form
+        onSubmit={handleSubmit}>
         <FormTitle>Log In</FormTitle>
         <InputForm
           src={state.mailIco}
@@ -32,7 +56,7 @@ const LoginBody: React.FC<Props> = (props) => {
           src={state.hideIco}
           placeholder={state.placeholderPassword}
           label={state.labelPassword} />
-        <Links to="#">Log in</Links>
+        <Button type="submit">Log in</Button>
       </Form>
 
       <Image src={mainPicture} />
@@ -72,11 +96,11 @@ const Image = styled.img`
   display: flex;
   max-width: 612px;
   max-height: 522px;
-  width: 50%;
-  height: 50%;
+  width: 45.7%;
+  height: 45.7%;
 `;
 
-const Links = styled(Link)`
+const Button = styled.button`
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -5,15 +5,17 @@ type Props = {
   label: string;
   placeholder: string;
   src: string;
+  value?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 };
 
 const FormUserField: React.FC<Props> = (props) => {
   return (
-    <FormField>
-      <FormIco src={props.src}/>
+    <FormField >
+      <img className="form__logo" src={props.src}/>
       <InputWrapper>
         <Label>{props.label}</Label>
-        <Input type='text' placeholder={props.placeholder}/>
+        <Input type='text' placeholder={props.placeholder} onChange={props.onChange} value={props.value}/>
       </InputWrapper>
     </FormField>
   );
@@ -28,6 +30,17 @@ const FormField = styled.div`
   height: 64px;
   background: #F0F4EF;
   border-radius: 16px;
+
+  .form {
+    &__logo {
+      width: 24px;
+      height: 24px;
+
+      margin-top: 20px;
+      margin-left:24px;
+      margin-right: 16px;
+    }
+  }
 `;
 
 const FormIco = styled.img`

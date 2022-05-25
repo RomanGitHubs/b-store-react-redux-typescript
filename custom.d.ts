@@ -17,3 +17,9 @@ declare module '*.png' {
   const content: any;
   export default content;
 }
+
+interface AuthContextType {
+  user: any;
+  signin: (user: string, callback: VoidFunction) => void;
+  signout: (callback: VoidFunction) => void;
+}

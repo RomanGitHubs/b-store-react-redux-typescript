@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import userPhoto from '../assets/user-photo.svg';
@@ -7,14 +7,33 @@ import userIco from '../assets/user-ico.svg';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
 import btnPhoto from '../assets/button-photo.svg';
+import InputForm from './InputForm';
+import { getUser, User } from '../API/users';
 
-type Props = {};
+type Props = {
+
+};
 
 const LoginBody: React.FC<Props> = (props) => {
+  const [user, setUser] = useState<User | undefined>();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await new Promise(r => {
+          setTimeout(() => r(1), 2000);
+        });
+        const user = await getUser();
+        setUser(user.data);
+      } catch (e: any) {
+        console.log('er>', e);
+      }
+    })();
+  }, []);
   return (
     <Body>
       <PhotoWrapper>
-        <Photo src={userPhoto}/>
+        <Photo src={userPhoto} />
         <PhotoBtn />
       </PhotoWrapper>
 
@@ -24,21 +43,32 @@ const LoginBody: React.FC<Props> = (props) => {
 
             <FormHeader>
               <FormTitle>Personal information</FormTitle>
-              <ChangeInformation to="#">Change information</ChangeInformation>
+              <ChangeInformation >Change information</ChangeInformation>
             </FormHeader>
 
-            <FormUserField label={'Your name'} placeholder={'Guy Hawkins'} src={userIco}/>
-            <FormUserField label={'Your email'} placeholder={'kenzi.lawson@example.com'} src={mailIco}/>
+            <FormUserField label={'Your name'} placeholder={'Guy Hawkins'} src={userIco}  onChange={() => {}}
+              value={user ? user.name : ''}/>
+            <FormUserField
+              label={'Your email'}
+              placeholder="kenzi.lawson@example.com"
+              src={mailIco}
+              onChange={() => {}}
+              value={user ? user.email : undefined}
+            />
 
           </PersonalInformation>
 
           <PasswordInformation>
             <FormHeader>
               <FormTitle>Personal information</FormTitle>
-              <ChangeInformation to="#">Change information</ChangeInformation>
+              <ChangeInformation >Change information</ChangeInformation>
             </FormHeader>
 
-            <FormUserField label={'Your password'} placeholder={'************'} src={hideIco}/>
+            <FormUserField label={'Your password'} placeholder={'************'} src={hideIco}  onChange={() => {}}
+              value=""/>
+
+            <InputForm placeholder={'New password'} label={'Enter your password'} src={hideIco} />
+            <InputForm placeholder={'Password replay'} label={'Repeat your password without errors'} src={hideIco} />
 
           </PasswordInformation>
         </Information >
@@ -85,19 +115,20 @@ const PhotoBtn = styled.button`
 const Wrapper = styled.div`
   display:flex;
   justify-content: end;
+  width: 650px;
+
 `;
 
 const Information = styled.div`
   display: flex;
   flex-direction: column;
-  width: 650px;
+  width: 522px;
   justify-content: end;
 
 `;
 
 const PersonalInformation = styled.div`
   display: flex;
-  width: 522px;
   flex-direction: column;
 `;
 
@@ -123,7 +154,7 @@ const FormTitle = styled.div`
   color: #0D1821;
 `;
 
-const ChangeInformation = styled(Link)`
+const ChangeInformation = styled.button`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -132,6 +163,9 @@ const ChangeInformation = styled(Link)`
   text-align: right;
   text-decoration-line: underline;
   color: #8D9F4F;
+  border: none;
+  background-color: white;
+  cursor: pointer;
 `;
 
 const PasswordInformation = styled.div`
