@@ -1,21 +1,25 @@
 import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import HomeBody from '../components/HomeBody';
-import { AuthStatus } from '../utils/AuthProvider';
+import styled from 'styled-components';
+import Banner from '../components/Banner';
+import Pagination from '../components/Pagination';
+import Catalog from '../components/Catalog';
+import AuthBanner from '../components/AuthBanner';
 
 type Props = {};
 
 const Home: React.FC<Props> = (props) => {
   return (
-    <div>
-      <Header link={'../login'}/>
-      <AuthStatus />
-
-      <HomeBody />
-      <Footer />
-    </div>
+    <Body>
+      <Banner />
+      <Catalog />
+      <Pagination />
+      <AuthBanner />
+    </Body>
   );
 };
 
 export default Home;
+
+const Body = styled.div`
+margin: 40px calc(calc(calc(1%) - 9px) * 15) 150px calc(calc(calc(1%) - 9px) * 15);
+`;

@@ -41,6 +41,7 @@ module.exports = {
     'no-underscore-dangle': ['error', { allow: ['_'] }],
     'array-element-newline': ['error', 'consistent'],
     'func-names': ['error', 'as-needed'],
+    'no-param-reassign': ['error', { props: false }],
     indent: 'off',
     '@typescript-eslint/indent': [
       'error',

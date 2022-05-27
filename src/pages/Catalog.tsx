@@ -8,9 +8,7 @@ type Props = {};
 const Catalog: React.FC<Props> = (props) => {
   return (
     <div>
-      <Header link="../signup"/>
       <CatalogBody />
-      <Footer />
     </div>
   );
 };
