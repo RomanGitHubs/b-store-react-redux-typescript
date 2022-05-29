@@ -17,5 +17,5 @@ const HomeBody: React.FC<Props> = (props) => {
 export default HomeBody;
 
 const Body = styled.div`
-margin: 40px calc(calc(calc(1%) - 9px) * 15) 150px calc(calc(calc(1%) - 9px) * 15);
+margin: 40px calc(calc(calc(1.3%) - 9px) * 8) 150px;
 `;

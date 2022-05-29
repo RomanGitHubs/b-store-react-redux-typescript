@@ -5,6 +5,7 @@ type Props = {
   src: string,
   placeholder: string,
   label: string,
+  value: string,
 }
 
 const InputForm: React.FC<Props> = (props) => {
@@ -12,7 +13,7 @@ const InputForm: React.FC<Props> = (props) => {
     <FormWrapper>
       <InputWrapper>
         <FormIco src={props.src}/>
-        <Input type="text" id="input-password" placeholder={props.placeholder}/>
+        <Input type="text" id="input-password" placeholder={props.placeholder} value={props.value}/>
       </InputWrapper>
       <InputLabel className="form-label">{props.label}</InputLabel>
     </FormWrapper>
@@ -25,12 +26,16 @@ const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
+  max-width: 413px;
+  width: 100%;
+
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   position: relative;
   width: 100%;
+  // width: 413px;
 `;
 
 const FormIco = styled.img`
@@ -38,13 +43,13 @@ const FormIco = styled.img`
   width: 24px;
   height: 24px;
   z-index: 2;
-  top: 20px;
+  top: 18px;
   left:24px;
 `;
 
 const Input = styled.input`
   position: relative;
-  width: 413px;
+  width: 100%;
   height: 24px;
   display: flex;
   background: #F0F4EF;

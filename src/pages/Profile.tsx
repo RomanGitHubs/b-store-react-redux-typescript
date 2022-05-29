@@ -15,22 +15,7 @@ import { useAppDispatch } from '../store/hooks';
 type Props = {};
 
 const Profile: React.FC<Props> = (props) => {
-  const [user, setUser] = useState<User | undefined>();
-  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        await new Promise(r => {
-          setTimeout(() => r(1), 2000);
-        });
-        const user = await getUser();
-        dispatch(user);
-      } catch (e: any) {
-        console.log('er>', e);
-      }
-    })();
-  }, []);
   return (
     <Body>
       <PhotoWrapper>
@@ -48,13 +33,13 @@ const Profile: React.FC<Props> = (props) => {
             </FormHeader>
 
             <FormUserField label={'Your name'} placeholder={'Guy Hawkins'} src={userIco}  onChange={() => {}}
-              value={user ? user.name : ''}/>
+              value={''}/>
             <FormUserField
               label={'Your email'}
               placeholder="kenzi.lawson@example.com"
               src={mailIco}
               onChange={() => {}}
-              value={user ? user.email : undefined}
+              value={undefined}
             />
 
           </PersonalInformation>
@@ -68,8 +53,8 @@ const Profile: React.FC<Props> = (props) => {
             <FormUserField label={'Your password'} placeholder={'************'} src={hideIco} onChange={() => {}}
               value=""/>
 
-            <InputForm placeholder={'New password'} label={'Enter your password'} src={hideIco} />
-            <InputForm placeholder={'Password replay'} label={'Repeat your password without errors'} src={hideIco} />
+            <InputForm placeholder={'New password'} label={'Enter your password'} src={hideIco} value={''} />
+            <InputForm placeholder={'Password replay'} label={'Repeat your password without errors'} src={hideIco} value={''} />
 
           </PasswordInformation>
         </Information >
@@ -87,7 +72,7 @@ export default Profile;
 const Body = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 60px calc(calc(calc(1%) - 9px) * 15)  110px calc(calc(calc(1%) - 9px) * 15);
+  margin: 60px calc(calc(calc(1.3%) - 9px) * 8) 110px ;
 `;
 
 const PhotoWrapper = styled.div`

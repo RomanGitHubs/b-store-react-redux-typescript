@@ -1,6 +1,16 @@
 export type User = {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  avatarUrl: string;
+  // address: object;
+  // avatarUrl: string;
 };
+
+export type LoginUser = {
+  email: string;
+  password: string;
+};
+
+
+

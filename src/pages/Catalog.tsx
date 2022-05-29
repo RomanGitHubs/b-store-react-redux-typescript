@@ -1,16 +1,27 @@
 import React from 'react';
-import Header from '../components/Header';
-import CatalogBody from '../components/CatalogBody';
-import Footer from '../components/Footer';
+import styled from 'styled-components';
 
 type Props = {};
 
 const Catalog: React.FC<Props> = (props) => {
   return (
-    <div>
-      <CatalogBody />
-    </div>
+    <Body>
+      <div className='payload'>asd</div>
+    </Body>
   );
 };
 
 export default Catalog;
+
+const Body = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 90px calc(calc(calc(1%) - 9px) * 15) 80px;
+
+  .payload {
+    display: flex;
+    
+  }
+`;
+
+

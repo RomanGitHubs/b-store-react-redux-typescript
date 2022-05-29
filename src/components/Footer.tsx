@@ -15,12 +15,12 @@ const Footer: React.FC<Props> = (props) => {
           <Paragraph>tranthuy.nute@gmail.com</Paragraph>
           <Paragraph>(480) 555-0103</Paragraph>
         </FooterColumn>
-        <FooterColumn>
+        <FooterColumnLink>
           <Links to="/">Home Page</Links>
           <Links to="/catalog">Catalog</Links>
           <Links to="/profile">My Account</Links>
           <Links to="/cart">Cart</Links>
-        </FooterColumn>
+        </FooterColumnLink>
         <FooterColumn>
           <Paragraph>6391 Elgin St. Celina, Delaware 10299</Paragraph>
           <Map src={map} />
@@ -39,13 +39,20 @@ const FooterWrapper = styled.footer`
 
 const Foot = styled.div`
 display: flex;
-padding: 73px calc(calc(calc(1%) - 9px) * 15);
+padding: 73px calc(calc(calc(1.3%) - 9px) * 8);;
 justify-content: space-between;
 `;
 
 const FooterColumn = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const FooterColumnLink = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  margin: 0 20px;
 `;
 
 const Logo = styled(Link)`
@@ -83,4 +90,5 @@ const Links = styled(Link)`
   margin: 0;
   margin-bottom: 5px;
   text-decoration: none;
+  width: 120px;
 `;

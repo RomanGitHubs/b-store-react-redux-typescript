@@ -5,7 +5,7 @@ import logo from '../assets/logo-header.svg';
 import searchIco from '../assets/search-ico.svg';
 
 type Props = {
-  link: string;
+
 };
 
 const Header: React.FC<Props> = (props) => {
@@ -19,7 +19,10 @@ const Header: React.FC<Props> = (props) => {
           <Input placeholder="Search"/>
         </InputWrapper>
       </Center>
-      <Links to={props.link}>Log In / Sign Up</Links>
+      <Links>
+        <LinkSign to={'/signup'}>Sign Up</LinkSign>
+        <LinkLog to={'/login'}>Log In</LinkLog>
+      </Links>
     </Head>
   );
 };
@@ -30,22 +33,21 @@ const Head = styled.header`
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
-  margin-left: calc(calc(calc(1%) - 9px) * 15);
-  margin-right: calc(calc(calc(1%) - 9px) * 15);
+  margin-left: calc(calc(calc(1.3%) - 9px) * 8);
+  margin-right: calc(calc(calc(1.3%) - 9px) * 8);
   align-items: center;
 `;
 
 const Logo = styled(Link)`
   display: flex;
-  width: 88.5px;
-  height: 46px;
+  min-width: 88.5px;
+  min-height: 46px;
   background-image: url(${logo});
   background-size: cover;
 `;
 
 const Center = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   max-width: 782px;
@@ -60,7 +62,10 @@ const InputName = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  padding: 0 43px 0 43px;
+  // flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 152px;
 `;
 
 const InputWrapper = styled.div`
@@ -96,14 +101,24 @@ const Input = styled.input`
   line-height: 24px;
 `;
 
-const Links = styled(Link)`
+const Links = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 231px;
+  // max-wigth: 231px;
+  min-width: 210px;
+  margin-left: 51px;
+`
+
+const LinkLog = styled(Link)`
+  display: flex;
   justify-content: center;
   align-items: center;
-  width: 231px;
+  width: 100px;
   height: 44px;
-  min-width: 173px;
+  // min-width: 173px;
   cursor: pointer;
   background: #344966;
 
@@ -118,5 +133,28 @@ const Links = styled(Link)`
   line-height: 30px;
   letter-spacing: 0.75px;
   color: #F0F4EF;
+  text-decoration: none;
+`;
+
+const LinkSign = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 40px;
+  // min-width: 173px;
+  cursor: pointer;
+
+  text-align: center;
+  border-radius: 16px;
+  border: 2px solid #344966;
+
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 30px;
+  letter-spacing: 0.75px;
+  color: #344966;
   text-decoration: none;
 `;

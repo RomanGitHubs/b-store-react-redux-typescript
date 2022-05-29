@@ -38,17 +38,19 @@ const Login: React.FC<Props> = (props) => {
 
   return (
     <Body>
-      <Form >
+      <Form onSubmit={(e) => {e.preventDefault; console.log(e.target)}}>
         <FormTitle>Log In</FormTitle>
         <InputForm
           src={state.mailIco}
           placeholder={state.placeholderEmail}
           label={state.labelEmail}
+          value={'value'}
         />
         <InputForm
           src={state.hideIco}
           placeholder={state.placeholderPassword}
-          label={state.labelPassword} />
+          label={state.labelPassword} 
+          value={'value'}/>
         <Button type="submit">Log in</Button>
       </Form>
 
@@ -62,7 +64,7 @@ export default Login;
 const Body = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 90px calc(calc(calc(1%) - 9px) * 15) 80px;
+  margin: 90px calc(calc(calc(1.3%) - 9px) * 8) 80px;
 `;
 
 const Form = styled.form`
@@ -72,6 +74,8 @@ const Form = styled.form`
   font-size: 40px;
   line-height: 60px;
   color: #0D1821;
+  max-width: 413px;
+  width: 100%;
 `;
 
 const FormTitle = styled.h2`
@@ -89,8 +93,11 @@ const Image = styled.img`
   display: flex;
   max-width: 612px;
   max-height: 522px;
-  width: 45.7%;
+  // width: 45.7%;
   height: 45.7%;
+  min-width: 390px;
+  padding-left:20px;
+  margin: auto 0;
 `;
 
 const Button = styled.button`

@@ -10,12 +10,16 @@ type Props = {
 };
 
 const FormUserField: React.FC<Props> = (props) => {
+
+  const [value, setValue] = useState('');
+
+
   return (
     <FormField >
       <img className="form__logo" src={props.src}/>
       <InputWrapper>
         <Label>{props.label}</Label>
-        <Input type='text' placeholder={props.placeholder} onChange={props.onChange} value={props.value}/>
+        <Input type='text' placeholder={props.placeholder} onChange={props.onChange} value={value} />
       </InputWrapper>
     </FormField>
   );

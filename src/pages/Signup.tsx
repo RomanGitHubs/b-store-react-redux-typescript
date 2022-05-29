@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import mainPicture from '../assets/reg-chel.jpg';
@@ -21,23 +21,36 @@ const state = {
 type Props = {};
 
 const Signup: React.FC<Props> = (props) => {
+
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(e);
+    
+  }
+
+
   return (
     <Body>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <FormTitle>Sign Up</FormTitle>
         <InputForm
           src={state.mailIco}
           placeholder={state.placeholderEmail}
-          label={state.labelEmail}/>
+          label={state.labelEmail}
+          value={value}
+          />
         <InputForm
           src={state.hideIco}
           placeholder={state.placeholderPassword}
-          label={state.labelPassword}/>
+          label={state.labelPassword}
+          value={value}/>
         <InputForm
           src={state.hideIco}
           placeholder={state.placeholderPasswordReplay}
-          label={state.labelReplay}/>
-        <Links to="#">Sign Up</Links>
+          label={state.labelReplay}
+          value={value}/>
+        <Button type="submit">Sing Up</Button>
       </Form>
 
       <Image src={mainPicture}/>
@@ -50,7 +63,7 @@ export default Signup;
 const Body = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 90px calc(calc(calc(1%) - 9px) * 15) 80px;
+  margin: 90px calc(calc(calc(1.3%) - 9px) * 8) 80px;
 `;
 
 const Form = styled.form`
@@ -60,6 +73,8 @@ const Form = styled.form`
   font-size: 40px;
   line-height: 60px;
   color: #0D1821;
+  max-width: 413px;
+  width: 100%;
 `;
 
 const FormTitle = styled.h2`
@@ -74,14 +89,17 @@ const FormTitle = styled.h2`
 `;
 
 const Image = styled.img`
-  display: flex;
-  max-width: 612px;
-  max-height: 522px;
-  width: 50%;
-  height: 50%;
+display: flex;
+max-width: 612px;
+max-height: 522px;
+// width: 45.7%;
+height: 45.7%;
+min-width: 390px;
+padding-left:20px;
+margin: auto 0;
 `;
 
-const Links = styled(Link)`
+const Button = styled.button`
   display: flex;
   flex-direction: column;
   justify-content: center;

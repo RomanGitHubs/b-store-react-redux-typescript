@@ -56,15 +56,16 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items:center;
-  position: relative;
+  // position: relative;
 `;
 
 const Image = styled.img`
   display: flex;
   position: absolute; 
-  top: -123px;
-  left: 50px;
+  top: -62px;
+  right: 0px;
   z-index: 2;
+  // width: 100%;
 `;
 
 const TextArea = styled.div`

@@ -1,16 +1,20 @@
 import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import styled from 'styled-components';
 
 type Props = {};
 
 const Cart: React.FC<Props> = (props) => {
   return (
-    <div>
-      <Header link="../signup"/>
-      <Footer />
-    </div>
+    <Body>
+
+    </Body>
   );
 };
 
 export default Cart;
+
+const Body = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 90px calc(calc(calc(1%) - 9px) * 15) 80px;
+`;
