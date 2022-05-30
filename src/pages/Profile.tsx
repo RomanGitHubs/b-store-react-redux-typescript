@@ -15,7 +15,6 @@ import { useAppDispatch } from '../store/hooks';
 type Props = {};
 
 const Profile: React.FC<Props> = (props) => {
-
   return (
     <Body>
       <PhotoWrapper>
@@ -33,13 +32,12 @@ const Profile: React.FC<Props> = (props) => {
             </FormHeader>
 
             <FormUserField label={'Your name'} placeholder={'Guy Hawkins'} src={userIco}  onChange={() => {}}
-              value={''}/>
+            />
             <FormUserField
               label={'Your email'}
               placeholder="kenzi.lawson@example.com"
               src={mailIco}
               onChange={() => {}}
-              value={undefined}
             />
 
           </PersonalInformation>
@@ -51,10 +49,10 @@ const Profile: React.FC<Props> = (props) => {
             </FormHeader>
 
             <FormUserField label={'Your password'} placeholder={'************'} src={hideIco} onChange={() => {}}
-              value=""/>
+              />
 
-            <InputForm placeholder={'New password'} label={'Enter your password'} src={hideIco} value={''} />
-            <InputForm placeholder={'Password replay'} label={'Repeat your password without errors'} src={hideIco} value={''} />
+            {/* <InputForm placeholder={'New password'} label={'Enter your password'} src={hideIco}  />
+            <InputForm placeholder={'Password replay'} label={'Repeat your password without errors'} src={hideIco} /> */}
 
           </PasswordInformation>
         </Information >

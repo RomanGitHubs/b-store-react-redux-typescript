@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
   label: string;
   placeholder: string;
   src: string;
-  value?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 };
 
 const FormUserField: React.FC<Props> = (props) => {
-
   const [value, setValue] = useState('');
-
 
   return (
     <FormField >

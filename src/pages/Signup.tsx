@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
 import mainPicture from '../assets/reg-chel.jpg';
-import InputForm from '../components/InputForm';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
+import { registerUser } from '../API/users';
 
 const state = {
   mailIco,
@@ -12,47 +12,114 @@ const state = {
   placeholderEmail: 'Email',
   placeholderPassword: 'Password',
   placeholderPasswordReplay: 'Password replay',
-
   labelEmail: 'Enter your email',
   labelPassword: 'Enter your password',
   labelReplay: 'Repeat your password without errors',
 };
 
 type Props = {};
+type Data = {
+  email: string;
+  password: string;
+  replay: string;
+};
 
 const Signup: React.FC<Props> = (props) => {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+      replay: '',
+    },
+  });
 
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    console.log(e);
-    
-  }
-
+  const onSubmit = (data: Data) => {
+    (async () => {
+      try {
+        if (data.password !== data.replay) return;
+        // delete data.replay;
+        const { replay, ...rest } = data;
+        const response = await registerUser(rest);
+        console.log('RESPONSE', response);
+        window.location.replace('/');
+      } catch (e: any) {
+        console.error('Error >>> ', e.response.data);
+      }
+    })();
+  };
 
   return (
     <Body>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>Sign Up</FormTitle>
-        <InputForm
-          src={state.mailIco}
-          placeholder={state.placeholderEmail}
-          label={state.labelEmail}
-          value={value}
-          />
-        <InputForm
-          src={state.hideIco}
-          placeholder={state.placeholderPassword}
-          label={state.labelPassword}
-          value={value}/>
-        <InputForm
-          src={state.hideIco}
-          placeholder={state.placeholderPasswordReplay}
-          label={state.labelReplay}
-          value={value}/>
-        <Button type="submit">Sing Up</Button>
-      </Form>
 
+        <Controller control={control}
+          render={({ field: { onChange, value } }) => (
+            <FormWrapper>
+              <InputWrapper>
+                <FormIco src={state.mailIco}/>
+                <Input
+                  type="text"
+                  id="input-email"
+                  placeholder={state.placeholderEmail}
+                  onChange={(value) => onChange(value)}
+                  value={value}
+                />
+              </InputWrapper>
+              <InputLabel className="form-label">{state.labelEmail}</InputLabel>
+            </FormWrapper>
+          )}
+          name="email"
+          rules={{ required: true }}
+        />
+
+        <Controller control={control}
+          render={({ field: { onChange, value } }) => (
+            <FormWrapper>
+              <InputWrapper>
+                <FormIco src={state.hideIco}/>
+                <Input
+                  type="text"
+                  id="input-email"
+                  placeholder={state.placeholderPassword}
+                  onChange={(value) => onChange(value)}
+                  value={value}
+                />
+              </InputWrapper>
+              <InputLabel className="form-label">{state.labelPassword}</InputLabel>
+            </FormWrapper>
+          )}
+          name="password"
+          rules={{ required: true }}
+        />
+
+        <Controller control={control}
+          render={({ field: { onChange, value } }) => (
+            <FormWrapper>
+              <InputWrapper>
+                <FormIco src={state.hideIco}/>
+                <Input
+                  type="text"
+                  id="input-email"
+                  placeholder={state.placeholderPassword}
+                  onChange={(value) => onChange(value)}
+                  value={value}
+                />
+              </InputWrapper>
+              <InputLabel className="form-label">{state.labelReplay}</InputLabel>
+            </FormWrapper>
+          )}
+          name="replay"
+          rules={{ required: true }}
+        />
+
+        <Button type="submit">Sing Up</Button>
+
+      </Form>
       <Image src={mainPicture}/>
     </Body>
   );
@@ -123,4 +190,65 @@ const Button = styled.button`
   letter-spacing: 0.75px;
   color: #F0F4EF;
   text-decoration: none;
+`;
+
+
+const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  max-width: 413px;
+  width: 100%;
+
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  // width: 413px;
+`;
+
+const FormIco = styled.img`
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  z-index: 2;
+  top: 18px;
+  left:24px;
+`;
+
+const Input = styled.input`
+  position: relative;
+  width: 100%;
+  height: 24px;
+  display: flex;
+  background: #F0F4EF;
+  border-radius: 16px;
+  border: none;
+  padding: 18px 18px 18px 64px;
+  outline: none;
+  align-items: center;
+
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: 0.75px;
+  color: black;
+`;
+
+const InputLabel = styled.label`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.75px;
+  color: #344966;
+  margin-top: 9px;
 `;

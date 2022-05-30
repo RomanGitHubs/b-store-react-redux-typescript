@@ -1,19 +1,33 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { User, LoginUser } from '../store/models/user';
-import axiosInstance from '../API';
+import { AxiosResponse, AxiosRequestConfig } from 'axios';
+import { User } from '../store/models/user';
+import axios from '../API';
+
+type UserResponse = {
+  accessToken?: string;
+  user: User;
+}
+
+type Data = {
+  email: string;
+  password: string;
+}
 
 export const getUser = (): Promise<AxiosResponse<User>> => {
-  return axiosInstance.get('/user');
+  return axios.get('/user');
 };
 
-export const loginUser = (): Promise<AxiosRequestConfig<LoginUser>> => {
-  return axios.post('auth/login');
+export const registerUser = (data: Data): Promise<AxiosResponse<UserResponse>> => {
+  return axios.post('auth/register', data);
 };
 
-export const registerUser = (): Promise<AxiosResponse<User>> => {
-  return axios.post('auth/register');
+export const loginUser = (data: Data): Promise<AxiosResponse<UserResponse>> => {
+  return axios.post('auth/login', data);
 };
 
-export const updateUser = (): Promise<AxiosResponse<User>> => {
-  return axios.put('https://jsonplaceholder.typicode.com/users/1');
-};
+// export const registerUser = (data: string) => {
+//   return axios.request({ method: 'post', baseURL: 'http://localhost:5000/api', url: 'auth/register', data });
+// };
+
+// export const updateUser = (): Promise<AxiosResponse<User>> => {
+//   return axios.put('https://jsonplaceholder.typicode.com/users/1');
+// };

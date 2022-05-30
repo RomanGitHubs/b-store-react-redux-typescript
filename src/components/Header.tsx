@@ -9,9 +9,15 @@ type Props = {
 };
 
 const Header: React.FC<Props> = (props) => {
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    document.location.reload();
+    // setReady(false);
+  };
+
   return (
     <Head>
-      <Logo to={'/'} />
+      <Logo onClick={handleLogout}/>
       <Center>
         <InputName>Catalog</InputName>
         <InputWrapper className="input-wrapper">
@@ -38,12 +44,15 @@ const Head = styled.header`
   align-items: center;
 `;
 
-const Logo = styled(Link)`
+const Logo = styled.button`
   display: flex;
   min-width: 88.5px;
   min-height: 46px;
   background-image: url(${logo});
   background-size: cover;
+  border: none;
+  background-color: white;
+  cursor: pointer;
 `;
 
 const Center = styled.div`

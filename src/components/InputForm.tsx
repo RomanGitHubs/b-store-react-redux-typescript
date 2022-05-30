@@ -1,5 +1,7 @@
-import React from 'react';
+import { error } from 'console';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useAppDispatch } from '../store/hooks';
 
 type Props = {
   src: string,
@@ -9,11 +11,16 @@ type Props = {
 }
 
 const InputForm: React.FC<Props> = (props) => {
+  const dispatch = useAppDispatch();
+  const [value, setValue] = useState('');
+
+  const handleChange = (e: any) => setValue(e.target.value);
+
   return (
     <FormWrapper>
       <InputWrapper>
         <FormIco src={props.src}/>
-        <Input type="text" id="input-password" placeholder={props.placeholder} value={props.value}/>
+        <Input type="text" id="input-password" placeholder={props.placeholder} value={value} onChange={handleChange}/>
       </InputWrapper>
       <InputLabel className="form-label">{props.label}</InputLabel>
     </FormWrapper>
