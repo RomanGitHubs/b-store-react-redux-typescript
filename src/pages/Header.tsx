@@ -1,23 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import logo from '../assets/logo-header.svg';
 import searchIco from '../assets/search-ico.svg';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import cartIco from '../assets/button-cart.svg';
+import favoriteIco from '../assets/button-favorite.svg';
+import userIco from '../assets/button_user.svg';
+import { User } from '../store/models/user';
+import { logoutUser } from '../store/redusers/user';
 
 type Props = {
 
 };
 
 const Header: React.FC<Props> = (props) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem('token');
-    document.location.reload();
-    // setReady(false);
+    dispatch(logoutUser(null));
+    navigate('/');
+  };
+
+  const user = useAppSelector((state) => state.userSlice.user);
+
+  const goHome = () => {
+    navigate('/');
   };
 
   return (
     <Head>
-      <Logo onClick={handleLogout}/>
+      <Logo onClick={goHome}/>
       <Center>
         <InputName>Catalog</InputName>
         <InputWrapper className="input-wrapper">
@@ -25,10 +40,20 @@ const Header: React.FC<Props> = (props) => {
           <Input placeholder="Search"/>
         </InputWrapper>
       </Center>
-      <Links>
-        <LinkSign to={'/signup'}>Sign Up</LinkSign>
-        <LinkLog to={'/login'}>Log In</LinkLog>
-      </Links>
+
+      { user ? (
+        <Links>
+          <LinkCart to={'/cart'} />
+          <LinkFavorite onClick={handleLogout}/>
+          <LinkUser to={'/profile'} />
+        </Links>
+      ) : (
+        <Links>
+          <LinkSign to={'/signup'}>Sign Up</LinkSign>
+          <LinkLog to={'/login'}>Log In</LinkLog>
+        </Links>
+      )}
+
     </Head>
   );
 };
@@ -39,8 +64,8 @@ const Head = styled.header`
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
-  margin-left: calc(calc(calc(1.3%) - 9px) * 8);
-  margin-right: calc(calc(calc(1.3%) - 9px) * 8);
+  margin-left: calc((1.3% - 9px) * 8);
+  margin-right: calc((1.3% - 9px) * 8);
   align-items: center;
 `;
 
@@ -71,7 +96,6 @@ const InputName = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  // flex-direction: column;
   justify-content: center;
   width: 100%;
   max-width: 152px;
@@ -116,10 +140,9 @@ const Links = styled.div`
   align-items: center;
 
   width: 231px;
-  // max-wigth: 231px;
   min-width: 210px;
-  margin-left: 51px;
-`
+  margin-left: 51px; 
+`;
 
 const LinkLog = styled(Link)`
   display: flex;
@@ -127,7 +150,6 @@ const LinkLog = styled(Link)`
   align-items: center;
   width: 100px;
   height: 44px;
-  // min-width: 173px;
   cursor: pointer;
   background: #344966;
 
@@ -151,9 +173,7 @@ const LinkSign = styled(Link)`
   align-items: center;
   width: 100px;
   height: 40px;
-  // min-width: 173px;
   cursor: pointer;
-
   text-align: center;
   border-radius: 16px;
   border: 2px solid #344966;
@@ -166,4 +186,28 @@ const LinkSign = styled(Link)`
   letter-spacing: 0.75px;
   color: #344966;
   text-decoration: none;
+`;
+
+const LinkCart = styled(Link)`
+  background-image: url(${cartIco});
+  background-size: cover;
+  width: 48px;
+  height: 48px;
+`;
+
+const LinkFavorite = styled.button`
+  background-image: url(${favoriteIco});
+  background-size: cover;
+  background-color: white;
+  width: 48px;
+  height: 48px;
+  border: none;
+  cursor: pointer;
+`;
+
+const LinkUser = styled(Link)`
+  background-image: url(${userIco});
+  background-size: cover;
+  width: 48px;
+  height: 48px;
 `;

@@ -14,7 +14,7 @@ const Banner:React.FC<Props> = (props) => {
         <TextArea>
           <Title>Build your library with us</Title>
           <Text>Buy two books and<br/>get one for free</Text>
-          <Links to='/login'>Choose a book</Links>
+          <Links to='/catalog'>Choose a book</Links>
         </TextArea>
         <Image src={bannerGirl} />
       </Content>

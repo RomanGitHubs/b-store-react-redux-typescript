@@ -1,10 +1,13 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import mainPicture from '../assets/reg-chel.jpg';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
 import { registerUser } from '../API/users';
+import { putUser } from '../store/redusers/user';
+import { useAppDispatch } from '../store/hooks';
 
 const state = {
   mailIco,
@@ -25,6 +28,9 @@ type Data = {
 };
 
 const Signup: React.FC<Props> = (props) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     control,
@@ -41,11 +47,11 @@ const Signup: React.FC<Props> = (props) => {
     (async () => {
       try {
         if (data.password !== data.replay) return;
-        // delete data.replay;
         const { replay, ...rest } = data;
-        const response = await registerUser(rest);
+        const response: any = await registerUser(rest);
+        dispatch(putUser(response.data));
         console.log('RESPONSE', response);
-        window.location.replace('/');
+        navigate('/');
       } catch (e: any) {
         console.error('Error >>> ', e.response.data);
       }
@@ -130,7 +136,7 @@ export default Signup;
 const Body = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 90px calc(calc(calc(1.3%) - 9px) * 8) 80px;
+  margin: 90px calc((1.3% - 9px) * 8) 80px;
 `;
 
 const Form = styled.form`
@@ -159,11 +165,9 @@ const Image = styled.img`
 display: flex;
 max-width: 612px;
 max-height: 522px;
-// width: 45.7%;
 height: 45.7%;
 min-width: 390px;
 padding-left:20px;
-margin: auto 0;
 `;
 
 const Button = styled.button`
@@ -191,7 +195,6 @@ const Button = styled.button`
   color: #F0F4EF;
   text-decoration: none;
 `;
-
 
 const FormWrapper = styled.div`
   display: flex;

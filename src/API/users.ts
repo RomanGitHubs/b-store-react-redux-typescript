@@ -12,6 +12,14 @@ type Data = {
   password: string;
 }
 
+type EditData = {
+  email?: string;
+  password?: string;
+  name?: string;
+  newPassword?: string;
+  photo?: string;
+}
+
 export const getUser = (): Promise<AxiosResponse<User>> => {
   return axios.get('/user');
 };
@@ -28,6 +36,6 @@ export const loginUser = (data: Data): Promise<AxiosResponse<UserResponse>> => {
 //   return axios.request({ method: 'post', baseURL: 'http://localhost:5000/api', url: 'auth/register', data });
 // };
 
-// export const updateUser = (): Promise<AxiosResponse<User>> => {
-//   return axios.put('https://jsonplaceholder.typicode.com/users/1');
-// };
+export const updateUser = (data: EditData): Promise<AxiosResponse<UserResponse>> => {
+  return axios.put('user/edit', data);
+};

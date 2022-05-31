@@ -72,7 +72,8 @@ const Input = styled.input`
   font-size: 16px;
   line-height: 28px;
   letter-spacing: 0.75px;
-  color: black;
+  color: #344966;
+;
 `;
 
 const InputLabel = styled.label`

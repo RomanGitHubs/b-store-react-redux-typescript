@@ -39,7 +39,7 @@ const FooterWrapper = styled.footer`
 
 const Foot = styled.div`
 display: flex;
-padding: 73px calc(calc(calc(1.3%) - 9px) * 8);;
+padding: 73px calc((1.3% - 9px) * 8);
 justify-content: space-between;
 `;
 

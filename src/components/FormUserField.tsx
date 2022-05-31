@@ -3,20 +3,20 @@ import styled from 'styled-components';
 
 type Props = {
   label: string;
-  placeholder: string;
+  placeholder?: string;
   src: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: any;
+  value?: string;
+  disabled: boolean;
 };
 
 const FormUserField: React.FC<Props> = (props) => {
-  const [value, setValue] = useState('');
-
   return (
     <FormField >
       <img className="form__logo" src={props.src}/>
       <InputWrapper>
         <Label>{props.label}</Label>
-        <Input type='text' placeholder={props.placeholder} onChange={props.onChange} value={value} />
+        <Input type='text' placeholder={props.placeholder} onChange={props.onChange} value={props.value} disabled={props.disabled}/>
       </InputWrapper>
     </FormField>
   );
@@ -75,7 +75,7 @@ const Input = styled.input`
     font-size: 16px;
     line-height: 28px;
     letter-spacing: 0.75px;
-    color: black;
+    color: #344966;
 `;
 
 const Label = styled.label`

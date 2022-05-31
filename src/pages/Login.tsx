@@ -6,6 +6,10 @@ import InputForm from '../components/InputForm';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
 import { loginUser } from '../API/users';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks';
+import { putUser } from '../store/redusers/user';
+import { User } from '../store/models/user';
 
 const state = {
   mailIco,
@@ -22,8 +26,10 @@ type Data = {
   password: string;
 };
 
-
 const Login: React.FC<Props> = (props) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const {
     handleSubmit,
     control,
@@ -38,9 +44,10 @@ const Login: React.FC<Props> = (props) => {
   const onSubmit = (data: Data) => {
     (async () => {
       try {
-        const response = await loginUser(data);
+        const response: any = await loginUser(data);
+        dispatch(putUser(response.data));
         console.log('RESPONSE', response);
-        window.location.replace('/');
+        navigate('/');
       } catch (e: any) {
         console.error('Error >>> ', e.response.data);
       }
@@ -60,7 +67,7 @@ const Login: React.FC<Props> = (props) => {
                   type="text"
                   id="input-email"
                   placeholder={state.placeholderEmail}
-                  onChange={(value) => onChange(value)}
+                  onChange={onChange}
                   value={value}
                 />
               </InputWrapper>
@@ -80,7 +87,7 @@ const Login: React.FC<Props> = (props) => {
                   type="text"
                   id="input-password"
                   placeholder={state.placeholderPassword}
-                  onChange={(value) => onChange(value)}
+                  onChange={onChange}
                   value={value}
                 />
               </InputWrapper>
@@ -104,7 +111,7 @@ export default Login;
 const Body = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 90px calc(calc(calc(1.3%) - 9px) * 8) 80px;
+  margin: 90px calc((1.3% - 9px) * 8) 80px;
 `;
 
 const Form = styled.form`
@@ -133,11 +140,9 @@ const Image = styled.img`
   display: flex;
   max-width: 612px;
   max-height: 522px;
-  // width: 45.7%;
   height: 45.7%;
   min-width: 390px;
   padding-left:20px;
-  margin: auto 0;
 `;
 
 const Button = styled.button`

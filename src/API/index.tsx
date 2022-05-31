@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use((response) => {
   if (response.data.accessToken) {
-    console.log(response);
+    console.log('RESPONSE TOKEN >>> ', response.data.accessToken);
 
     localStorage.setItem('token', response.data.accessToken);
   }
