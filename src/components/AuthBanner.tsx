@@ -66,6 +66,7 @@ const Image = styled.img`
   right: 0px;
   z-index: 2;
   // width: 100%;
+  
 `;
 
 const TextArea = styled.div`

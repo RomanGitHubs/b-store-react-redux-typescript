@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+
 import logo from '../assets/logo-header.svg';
 import searchIco from '../assets/search-ico.svg';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
 import cartIco from '../assets/button-cart.svg';
 import favoriteIco from '../assets/button-favorite.svg';
 import userIco from '../assets/button_user.svg';
-import { User } from '../store/models/user';
+
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { logoutUser } from '../store/redusers/user';
 
 type Props = {
-
 };
 
 const Header: React.FC<Props> = (props) => {
@@ -20,7 +20,7 @@ const Header: React.FC<Props> = (props) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    dispatch(logoutUser(null));
+    dispatch(logoutUser());
     navigate('/');
   };
 

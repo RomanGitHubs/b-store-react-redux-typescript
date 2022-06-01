@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { RequireAuth } from './utils/RequireAuth';
+import { RequireAuth } from './components/RequireAuth';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
@@ -28,11 +28,12 @@ const App: React.FC = (props) => {
           const user = await getUser();
           dispatch(putUser(user.data));
           console.log(user.data);
-          
           setReady(true);
         }
       } catch (e: any) {
         console.error('Error >>> ', e.response.data.message);
+      } finally {
+        setReady(true);
       }
     })();
   }, []);

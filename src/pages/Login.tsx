@@ -1,15 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useForm, Controller } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 import mainPicture from '../assets/reg-chel.jpg';
-import InputForm from '../components/InputForm';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
 import { loginUser } from '../API/users';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/hooks';
 import { putUser } from '../store/redusers/user';
-import { User } from '../store/models/user';
 
 const state = {
   mailIco,
@@ -26,9 +24,20 @@ type Data = {
   password: string;
 };
 
+interface LocationState {
+  from: {
+    pathname: string,
+  };
+}
+
 const Login: React.FC<Props> = (props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
+
+  const from = location.state as LocationState || { from: { pathname: '/' } };
+
+  console.log(from);
 
   const {
     handleSubmit,
@@ -41,17 +50,16 @@ const Login: React.FC<Props> = (props) => {
     },
   });
 
-  const onSubmit = (data: Data) => {
-    (async () => {
-      try {
-        const response: any = await loginUser(data);
-        dispatch(putUser(response.data));
-        console.log('RESPONSE', response);
-        navigate('/');
-      } catch (e: any) {
-        console.error('Error >>> ', e.response.data);
-      }
-    })();
+  const onSubmit = async (data: Data) => {
+    try {
+      const response = await loginUser(data);
+      dispatch(putUser(response.data.user));
+      console.log('RESPONSE', response);
+
+      navigate(from.from.pathname, { replace: true });
+    } catch (e: any) {
+      console.error('Error >>> ', e.response.data);
+    }
   };
 
   return (
@@ -62,7 +70,7 @@ const Login: React.FC<Props> = (props) => {
           render={({ field: { onChange, value } }) => (
             <FormWrapper>
               <InputWrapper>
-                <FormIco src={state.mailIco}/>
+                <FormIco src={state.mailIco} />
                 <Input
                   type="text"
                   id="input-email"
@@ -82,7 +90,7 @@ const Login: React.FC<Props> = (props) => {
           render={({ field: { onChange, value } }) => (
             <FormWrapper>
               <InputWrapper>
-                <FormIco src={state.hideIco}/>
+                <FormIco src={state.hideIco} />
                 <Input
                   type="text"
                   id="input-password"

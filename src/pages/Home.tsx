@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import Banner from '../components/Banner';
 import Pagination from '../components/Pagination';
-import Catalog from './Catalog';
 import AuthBanner from '../components/AuthBanner';
-import { useAppSelector } from '../store/hooks';
 import CatalogBody from '../components/CatalogBody';
+
+import { useAppSelector } from '../store/hooks';
 
 type Props = {};
 

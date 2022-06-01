@@ -17,7 +17,7 @@ const user = createSlice({
     putUser(state, action: PayloadAction<User>) {
       state.user = action.payload;
     },
-    logoutUser(state, action) {
+    logoutUser(state) {
       state.user = null;
     },
   },

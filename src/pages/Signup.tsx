@@ -43,19 +43,17 @@ const Signup: React.FC<Props> = (props) => {
     },
   });
 
-  const onSubmit = (data: Data) => {
-    (async () => {
-      try {
-        if (data.password !== data.replay) return;
-        const { replay, ...rest } = data;
-        const response: any = await registerUser(rest);
-        dispatch(putUser(response.data));
-        console.log('RESPONSE', response);
-        navigate('/');
-      } catch (e: any) {
-        console.error('Error >>> ', e.response.data);
-      }
-    })();
+  const onSubmit = async (data: Data) => {
+    try {
+      if (data.password !== data.replay) return;
+      const { replay, ...rest } = data;
+      const response = await registerUser(rest);
+      dispatch(putUser(response.data.user));
+      console.log('RESPONSE', response);
+      navigate('/');
+    } catch (e: any) {
+      console.error('Error >>> ', e.response.data);
+    }
   };
 
   return (
@@ -72,7 +70,7 @@ const Signup: React.FC<Props> = (props) => {
                   type="text"
                   id="input-email"
                   placeholder={state.placeholderEmail}
-                  onChange={(value) => onChange(value)}
+                  onChange={onChange}
                   value={value}
                 />
               </InputWrapper>
@@ -92,7 +90,7 @@ const Signup: React.FC<Props> = (props) => {
                   type="text"
                   id="input-email"
                   placeholder={state.placeholderPassword}
-                  onChange={(value) => onChange(value)}
+                  onChange={onChange}
                   value={value}
                 />
               </InputWrapper>
@@ -112,7 +110,7 @@ const Signup: React.FC<Props> = (props) => {
                   type="text"
                   id="input-email"
                   placeholder={state.placeholderPassword}
-                  onChange={(value) => onChange(value)}
+                  onChange={onChange}
                   value={value}
                 />
               </InputWrapper>

@@ -20,6 +20,9 @@ type EditData = {
   photo?: string;
 }
 
+type photoData = {
+  file?: string;
+}
 export const getUser = (): Promise<AxiosResponse<User>> => {
   return axios.get('/user');
 };
@@ -32,9 +35,9 @@ export const loginUser = (data: Data): Promise<AxiosResponse<UserResponse>> => {
   return axios.post('auth/login', data);
 };
 
-// export const registerUser = (data: string) => {
-//   return axios.request({ method: 'post', baseURL: 'http://localhost:5000/api', url: 'auth/register', data });
-// };
+export const photoUser = (data: photoData): Promise<AxiosResponse<UserResponse>> => {
+  return axios.put('user/uploadphoto', data);
+};
 
 export const updateUser = (data: EditData): Promise<AxiosResponse<UserResponse>> => {
   return axios.put('user/edit', data);

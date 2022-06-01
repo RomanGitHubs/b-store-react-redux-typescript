@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
-import userPhoto from '../assets/user-photo.svg';
 import FormUserField from '../components/FormUserField';
 import userIco from '../assets/user-ico.svg';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
+import profileIco from '../assets/profile-ico.svg';
 import btnPhoto from '../assets/button-photo.svg';
-import InputForm from '../components/InputForm';
-import { getUser, updateUser } from '../API/users';
-import { User } from '../store/models/user';
+import { photoUser, updateUser } from '../API/users';
+
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { putUser } from '../store/redusers/user';
 
@@ -26,15 +24,7 @@ type Data = {
 
 const Profile: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
-
-  const state = {
-    mailIco,
-    hideIco,
-    placeholderEmail: 'New password',
-    placeholderPassword: 'Password replay',
-    labelEmail: 'Enter your password',
-    labelPassword: 'Repeat your password without errors',
-  };
+  // const navigate = useNavigate();
 
   const user = useAppSelector((state) => state.userSlice.user);
 
@@ -42,31 +32,19 @@ const Profile: React.FC<Props> = (props) => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<Data>({
     defaultValues: {
       name: user?.name || '',
-      email: user?.email || '',
+      email: user?.email,
       password: '',
       newPassword: '',
       newPasswordReplay: '',
     },
   });
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const user = useAppSelector((state) => state.userSlice.user);
-  //     } catch (e: any) {
-  //       console.error('Error >>> ', e.response.data.message);
-  //     }
-  //   })();
-  // }, []);
-
-  console.log(user);
-
   const [updatable, setUpdatable] = useState(true);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setUpdatable(!updatable);
   };
@@ -80,7 +58,8 @@ const Profile: React.FC<Props> = (props) => {
           const response: any = await updateUser(rest);
           dispatch(putUser(response.data));
           console.log('RESPONSE', response);
-          // navigate('/');
+          setUpdatable(!updatable);
+          // navigate('/profile');
         } else {
           console.log('Not submite');
         }
@@ -89,13 +68,56 @@ const Profile: React.FC<Props> = (props) => {
       }
     })();
   };
-  
+  const [file, setFile] = React.useState(new Blob());
+
+  const handleUpload = async (event: any) => {
+    try {
+      const uploadFile = event.target.files[0];
+      console.log(event.target);
+      console.log(event.target.files);
+
+      setFile(uploadFile);
+      console.log(setFile(uploadFile));
+
+      const toDataURL = (uploadFile: any) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(uploadFile);
+      });
+
+      toDataURL(uploadFile)
+        .then(dataUrl => {
+          console.log('RESULT:', dataUrl);
+        })
+
+
+
+      const dataUrl = await toDataURL(uploadFile);
+      console.log('PAYLOAD:', dataUrl);
+
+      const response = await photoUser({ file: dataUrl as string });
+      console.log(response);
+
+      setFile(uploadFile);
+
+      console.log(file);
+
+      photoUser(uploadFile);
+
+      console.log('Photo send', uploadFile);
+      console.log('uploadFile', dataUrl);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Body>
+
       <PhotoWrapper>
-        <Photo src={userPhoto} />
-        <PhotoBtn />
+        <Photo src={ file ? URL.createObjectURL(file) : profileIco} />
+        <PhotoBtn type='file' onChange={handleUpload}/>
       </PhotoWrapper>
 
       <Wrapper>
@@ -104,15 +126,15 @@ const Profile: React.FC<Props> = (props) => {
 
             <FormHeader>
               <FormTitle>Personal information</FormTitle>
-              <ChangeInformation onClick={(e) => handleChange(e)}>
+              <ChangeInformation onClick={handleChange}>
                 Change information</ChangeInformation>
             </FormHeader>
 
             <Controller control={control}
               render={({ field: { onChange, value } }) => (
                 <FormUserField
-                  label={'Your name'}
-                  placeholder={'Enter your name'}
+                  label="Your name"
+                  placeholder="Enter your name"
                   value={value}
                   src={userIco}
                   onChange={onChange}
@@ -125,9 +147,9 @@ const Profile: React.FC<Props> = (props) => {
             <Controller control={control}
               render={({ field: { onChange, value } }) => (
                 <FormUserField
-                  label={'Your email'}
+                  label="Your email"
                   value={value}
-                  placeholder={'Enter your name'}
+                  placeholder="Enter your name"
                   src={mailIco}
                   onChange={onChange}
                   disabled={updatable}
@@ -147,8 +169,8 @@ const Profile: React.FC<Props> = (props) => {
             <Controller control={control}
               render={({ field: { onChange, value } }) => (
                 <FormUserField
-                  label={'Your password'}
-                  placeholder={'************'}
+                  label={!updatable ? 'Enter your password to confirm' : 'Old password'}
+                  placeholder="************"
                   src={hideIco}
                   onChange={onChange}
                   disabled={updatable}
@@ -164,17 +186,17 @@ const Profile: React.FC<Props> = (props) => {
                   render={({ field: { onChange, value } }) => (
                     <FormWrapper>
                       <InputWrapper>
-                        <FormIco src={state.hideIco}/>
+                        <FormIco src={hideIco}/>
                         <Input
                           type="text"
                           id="input-email"
-                          placeholder={state.placeholderEmail}
+                          placeholder="New password"
                           onChange={onChange}
                           value={value}
                           disabled={updatable}
                         />
                       </InputWrapper>
-                      <InputLabel className="form-label">{state.labelEmail}</InputLabel>
+                      <InputLabel className="form-label">Enter your password</InputLabel>
                     </FormWrapper>
                   )}
                   name="newPassword"
@@ -185,17 +207,17 @@ const Profile: React.FC<Props> = (props) => {
                   render={({ field: { onChange, value } }) => (
                     <FormWrapper>
                       <InputWrapper>
-                        <FormIco src={state.hideIco}/>
+                        <FormIco src={hideIco}/>
                         <Input
                           type="text"
                           id="input-password"
-                          placeholder={state.placeholderPassword}
+                          placeholder="Password replay"
                           onChange={onChange}
                           value={value}
                           disabled={updatable}
                         />
                       </InputWrapper>
-                      <InputLabel className="form-label">{state.labelPassword}</InputLabel>
+                      <InputLabel className="form-label">Repeat your password without errors</InputLabel>
                     </FormWrapper>
                   )}
                   name="newPasswordReplay"
@@ -222,18 +244,21 @@ const Body = styled.div`
   margin: 60px calc((1.3% - 9px) * 8) 110px ;
 `;
 
-const PhotoWrapper = styled.div`
+const PhotoWrapper = styled.form`
   display: flex;
   border-radius: 16px;
   position: relative;
+  background: #F0F4EF;
+  width: 305px;
+  height:305px;
 `;
 
 const Photo = styled.img`
-  max-width: 305px;
-  max-height:305px;
+  width: 305px;
+  height: 305px;
 `;
 
-const PhotoBtn = styled.button`
+const PhotoBtn = styled.input`
   position: absolute;
   top: 237px;
   left: 237px;
@@ -243,6 +268,9 @@ const PhotoBtn = styled.button`
   height: 48px;
   border: none;
   border-radius: 24px;
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  cursor: pointer;
 `;
 
 const Wrapper = styled.div`
