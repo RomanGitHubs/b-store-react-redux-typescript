@@ -8,6 +8,7 @@ type Props = {
   onChange: any;
   value?: string;
   disabled: boolean;
+  type: string;
 };
 
 const FormUserField: React.FC<Props> = (props) => {
@@ -16,7 +17,8 @@ const FormUserField: React.FC<Props> = (props) => {
       <img className="form__logo" src={props.src}/>
       <InputWrapper>
         <Label>{props.label}</Label>
-        <Input type='text' placeholder={props.placeholder} onChange={props.onChange} value={props.value} disabled={props.disabled}/>
+        <Input type={props.type} placeholder={props.placeholder}
+          onChange={props.onChange} value={props.value} disabled={props.disabled}/>
       </InputWrapper>
     </FormField>
   );

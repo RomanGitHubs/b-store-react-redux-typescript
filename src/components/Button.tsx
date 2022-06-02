@@ -3,9 +3,6 @@ import styled from 'styled-components';
 
 type Props = {
   title: string;
-  width: string;
-  marginTop: string;
-
 };
 
 const Button: React.FC<Props> = (props) => {

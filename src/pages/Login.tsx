@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import mainPicture from '../assets/reg-chel.jpg';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
-import { loginUser } from '../API/users';
+import { loginUser } from '../api/users';
 import { useAppDispatch } from '../store/hooks';
 import { putUser } from '../store/redusers/user';
 

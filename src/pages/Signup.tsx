@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import mainPicture from '../assets/reg-chel.jpg';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
-import { registerUser } from '../API/users';
+import { registerUser } from '../api/users';
 import { putUser } from '../store/redusers/user';
 import { useAppDispatch } from '../store/hooks';
 

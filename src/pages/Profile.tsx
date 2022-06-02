@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { AxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import FormUserField from '../components/FormUserField';
 import userIco from '../assets/user-ico.svg';
@@ -7,10 +8,11 @@ import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
 import profileIco from '../assets/profile-ico.svg';
 import btnPhoto from '../assets/button-photo.svg';
-import { photoUser, updateUser } from '../API/users';
+import { photoUser, updateUser } from '../api/users';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { putUser } from '../store/redusers/user';
+import { useLocation, useNavigate } from 'react-router';
 
 type Props = {};
 
@@ -24,7 +26,8 @@ type Data = {
 
 const Profile: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const user = useAppSelector((state) => state.userSlice.user);
 
@@ -32,7 +35,7 @@ const Profile: React.FC<Props> = (props) => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<Data>({
+  } = useForm({
     defaultValues: {
       name: user?.name || '',
       email: user?.email,
@@ -49,75 +52,75 @@ const Profile: React.FC<Props> = (props) => {
     setUpdatable(!updatable);
   };
 
-  const onSubmit = (data: Data) => {
-    (async () => {
-      try {
-        if (data.newPassword === data.newPasswordReplay && data.password) {
-          const { newPasswordReplay, ...rest } = data;
-          console.log('Submite', rest);
-          const response: any = await updateUser(rest);
-          dispatch(putUser(response.data));
-          console.log('RESPONSE', response);
-          setUpdatable(!updatable);
-          // navigate('/profile');
-        } else {
-          console.log('Not submite');
-        }
-      } catch (e: any) {
-        console.error('Error >>> ', e.response.data);
-      }
-    })();
-  };
-  const [file, setFile] = React.useState(new Blob());
-
-  const handleUpload = async (event: any) => {
+  const onSubmit = async (data: Data) => {
     try {
-      const uploadFile = event.target.files[0];
-      console.log(event.target);
-      console.log(event.target.files);
+      if (data.password === '') {
+        const { newPasswordReplay, newPassword, password, ...rest } = data;
 
-      setFile(uploadFile);
-      console.log(setFile(uploadFile));
+        const response = await updateUser(rest);
+        console.log(response);
 
-      const toDataURL = (uploadFile: any) => new Promise((resolve, reject) => {
+        dispatch(putUser(response.data.user));
+        console.log('Submite', response);
+        setUpdatable((prevValue) => !prevValue);
+      } else if (data.newPassword === data.newPasswordReplay && data.password) {
+        const { newPasswordReplay, ...rest } = data;
+
+        const response = await updateUser(rest);
+        dispatch(putUser(response.data.user));
+        console.log('Submite', response);
+
+        setUpdatable(!updatable);
+      } else {
+        console.log('Not submite');
+      }
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        const { response } = e as AxiosError;
+        return console.error('Error >>> ', response?.data);
+      }
+      alert('UNEXPECTED');
+    }
+  };
+
+  const handleUpload: React.ChangeEventHandler<HTMLInputElement> = async (event) => {
+    try {
+      const uploadFile = event.target?.files?.[0];
+
+      if (!uploadFile) {
+        return alert('No file');
+      }
+
+      const toDataURL = (uploadFile: File) => new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
+        reader.onloadend = () => resolve(reader.result as string);
         reader.onerror = reject;
         reader.readAsDataURL(uploadFile);
       });
 
-      toDataURL(uploadFile)
-        .then(dataUrl => {
-          console.log('RESULT:', dataUrl);
-        })
-
-
-
       const dataUrl = await toDataURL(uploadFile);
       console.log('PAYLOAD:', dataUrl);
 
-      const response = await photoUser({ file: dataUrl as string });
+      const response = await photoUser({ file: dataUrl });
       console.log(response);
 
-      setFile(uploadFile);
-
-      console.log(file);
-
-      photoUser(uploadFile);
-
-      console.log('Photo send', uploadFile);
-      console.log('uploadFile', dataUrl);
-    } catch (e) {
-      console.log(e);
+      dispatch(putUser(response.data.user));
+    } catch (e: any) {
+      console.log(e.response);
     }
   };
+
+  let userUrl = `${profileIco}`;
+  if (user?.photo) {
+    userUrl = `http://localhost:5000/static/${user.photo}`;
+  }
 
   return (
     <Body>
 
       <PhotoWrapper>
-        <Photo src={ file ? URL.createObjectURL(file) : profileIco} />
-        <PhotoBtn type='file' onChange={handleUpload}/>
+        <Photo src={userUrl} />
+        {!updatable ? <PhotoBtn type='file' onChange={handleUpload} /> : null}
       </PhotoWrapper>
 
       <Wrapper>
@@ -135,6 +138,7 @@ const Profile: React.FC<Props> = (props) => {
                 <FormUserField
                   label="Your name"
                   placeholder="Enter your name"
+                  type="text"
                   value={value}
                   src={userIco}
                   onChange={onChange}
@@ -148,6 +152,7 @@ const Profile: React.FC<Props> = (props) => {
               render={({ field: { onChange, value } }) => (
                 <FormUserField
                   label="Your email"
+                  type="email"
                   value={value}
                   placeholder="Enter your name"
                   src={mailIco}
@@ -169,8 +174,9 @@ const Profile: React.FC<Props> = (props) => {
             <Controller control={control}
               render={({ field: { onChange, value } }) => (
                 <FormUserField
-                  label={!updatable ? 'Enter your password to confirm' : 'Old password'}
+                  label={'Old password'}
                   placeholder="************"
+                  type="password"
                   src={hideIco}
                   onChange={onChange}
                   disabled={updatable}
@@ -186,9 +192,9 @@ const Profile: React.FC<Props> = (props) => {
                   render={({ field: { onChange, value } }) => (
                     <FormWrapper>
                       <InputWrapper>
-                        <FormIco src={hideIco}/>
+                        <FormIco src={hideIco} />
                         <Input
-                          type="text"
+                          type="password"
                           id="input-email"
                           placeholder="New password"
                           onChange={onChange}
@@ -207,9 +213,9 @@ const Profile: React.FC<Props> = (props) => {
                   render={({ field: { onChange, value } }) => (
                     <FormWrapper>
                       <InputWrapper>
-                        <FormIco src={hideIco}/>
+                        <FormIco src={hideIco} />
                         <Input
-                          type="text"
+                          type="password"
                           id="input-password"
                           placeholder="Password replay"
                           onChange={onChange}
@@ -256,6 +262,7 @@ const PhotoWrapper = styled.form`
 const Photo = styled.img`
   width: 305px;
   height: 305px;
+  border-radius: 24px;
 `;
 
 const PhotoBtn = styled.input`

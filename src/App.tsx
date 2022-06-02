@@ -10,7 +10,7 @@ import Cart from './pages/Cart';
 import Header from './pages/Header';
 import Footer from './pages/Footer';
 import { useAppDispatch, useAppSelector } from './store/hooks';
-import { getUser } from './API/users';
+import { getUser } from './api/users';
 import { putUser } from './store/redusers/user';
 import Loader from './components/Loader';
 
