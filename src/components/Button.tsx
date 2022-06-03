@@ -1,29 +1,31 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+type ButtonTypes = 'small' | 'large' | 'catalog';
 
 type Props = {
   title: string;
+  className?:string;
+  type?: ButtonTypes;
 };
 
 const Button: React.FC<Props> = (props) => {
   return (
-    <Body >
-      {props.title}
+    <Body type={props.type}>
+      $ {props.title} USD
     </Body>
   );
 };
 
-export default Button;
-
-const Body = styled.div`
+type StylesProps = {
+  type?: ButtonTypes;
+}
+const Body = styled.div<StylesProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 170px;
-  height: 44px;
   cursor: pointer;
   background: #344966;
-
   text-align: center;
   border-radius: 16px;
   border: none;
@@ -35,6 +37,25 @@ const Body = styled.div`
   line-height: 30px;
   letter-spacing: 0.75px;
   color: #F0F4EF;
-  text-decoration: none;
 
-`;
+  ${(props) => {
+    switch (props.type) {
+    case 'large':
+      return css``;
+    case 'small':
+      return css``;
+    case 'catalog':
+      return css`
+        width: 305px;
+        height: 48px;
+        font-size: 20px;
+        line-height: 28px;
+      `;
+    default:
+      return css``;
+    }
+  }}
+  
+  `;
+
+export default Button;

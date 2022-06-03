@@ -31,7 +31,7 @@ const App: React.FC = (props) => {
           setReady(true);
         }
       } catch (e: any) {
-        console.error('Error >>> ', e.response.data.message);
+        console.error('Error >>> ', e.response.data);
       } finally {
         setReady(true);
       }

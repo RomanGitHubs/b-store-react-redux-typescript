@@ -121,7 +121,7 @@ const Signup: React.FC<Props> = (props) => {
           rules={{ required: true }}
         />
 
-        <Button type="submit">Sing Up</Button>
+        <Button type="submit" className="test">Sing Up</Button>
 
       </Form>
       <Image src={mainPicture}/>
@@ -135,6 +135,10 @@ const Body = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 90px calc((1.3% - 9px) * 8) 80px;
+
+  .test {
+    background: tomato;
+  }
 `;
 
 const Form = styled.form`
