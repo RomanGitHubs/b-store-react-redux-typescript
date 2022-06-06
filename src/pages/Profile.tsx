@@ -11,7 +11,7 @@ import btnPhoto from '../assets/button-photo.svg';
 import { photoUser, updateUser } from '../api/users';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { putUser } from '../store/redusers/user';
+import { putUser } from '../store/reducers/user';
 import { useLocation, useNavigate } from 'react-router';
 
 type Props = {};

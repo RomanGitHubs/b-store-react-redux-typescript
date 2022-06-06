@@ -9,7 +9,7 @@ import favoriteIco from '../assets/button-favorite.svg';
 import userIco from '../assets/button_user.svg';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { logoutUser } from '../store/redusers/user';
+import { logoutUser } from '../store/reducers/user';
 
 type Props = {
 };
