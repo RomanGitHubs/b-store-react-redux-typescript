@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { putUser } from '../store/reducers/user';
+import { useAppDispatch } from '../store/hooks';
+import { registerUser } from '../api/users';
 import mainPicture from '../assets/reg-chel.jpg';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
-import { registerUser } from '../api/users';
-import { putUser } from '../store/redusers/user';
-import { useAppDispatch } from '../store/hooks';
+import clearCross from '../assets/close-cross-input.svg';
 
 const state = {
   mailIco,
@@ -27,15 +30,39 @@ type Data = {
   replay: string;
 };
 
+const regexPassword = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*!@#$%^&*(){}:;<>,.?~_=|-]).{4,16}$/;
+const warningEmail = {
+  email: 'Wrong email',
+  max: 'Email too long, get another',
+  required: 'Need email',
+};
+const warningPassword = {
+  matches: 'Password must contain at least 1 lowercase letter, at least 1 uppercase letter, and 1 special character',
+  min: 'Password shoud be min 6 charactes',
+  required: 'Need password',
+};
+
+const signupSchema = yup.object().shape({
+  email: yup.string().email(warningEmail.email).max(30, warningEmail.max)
+    .required(warningEmail.required),
+  password: yup.string().matches(regexPassword, warningPassword.matches)
+    .min(6, warningPassword.min).required(warningPassword.required),
+  replay: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+});
+
 const Signup: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const [errorState, setError] = useState(false);
+
   const {
     handleSubmit,
+    register,
     control,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(signupSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -56,70 +83,54 @@ const Signup: React.FC<Props> = (props) => {
     }
   };
 
+  const handleRequest = (e: React.FocusEventHandler<HTMLInputElement>) => {
+    console.log(e);
+  };
+
   return (
     <Body>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>Sign Up</FormTitle>
+        <FormWrapper>
+          <InputWrapper errorState>
+            <FormIco src={state.mailIco}/>
+            <input className='form__input'
+              type="text"
+              id="input-email"
+              placeholder={state.placeholderEmail}
+              {...register('email')}
+              // onBlur={handleRequest}
 
-        <Controller control={control}
-          render={({ field: { onChange, value } }) => (
-            <FormWrapper>
-              <InputWrapper>
-                <FormIco src={state.mailIco}/>
-                <Input
-                  type="text"
-                  id="input-email"
-                  placeholder={state.placeholderEmail}
-                  onChange={onChange}
-                  value={value}
-                />
-              </InputWrapper>
-              <InputLabel className="form-label">{state.labelEmail}</InputLabel>
-            </FormWrapper>
-          )}
-          name="email"
-          rules={{ required: true }}
-        />
+            />
+          </InputWrapper>
+          <InputLabel className="form-label" >{errors.email ? <P>{errors.email.message}</P> : state.labelEmail }</InputLabel>
+        </FormWrapper>
 
-        <Controller control={control}
-          render={({ field: { onChange, value } }) => (
-            <FormWrapper>
-              <InputWrapper>
-                <FormIco src={state.hideIco}/>
-                <Input
-                  type="text"
-                  id="input-email"
-                  placeholder={state.placeholderPassword}
-                  onChange={onChange}
-                  value={value}
-                />
-              </InputWrapper>
-              <InputLabel className="form-label">{state.labelPassword}</InputLabel>
-            </FormWrapper>
-          )}
-          name="password"
-          rules={{ required: true }}
-        />
+        <FormWrapper>
+          <InputWrapper errorState>
+            <FormIco src={state.hideIco}/>
+            <Input
+              type="text"
+              id="input-email"
+              placeholder={state.placeholderPassword}
+              {...register('password')}
+            />
+          </InputWrapper>
+          <InputLabel className="form-label">{errors.password ? <P>{errors.password.message}</P> : state.labelPassword }</InputLabel>
+        </FormWrapper>
 
-        <Controller control={control}
-          render={({ field: { onChange, value } }) => (
-            <FormWrapper>
-              <InputWrapper>
-                <FormIco src={state.hideIco}/>
-                <Input
-                  type="text"
-                  id="input-email"
-                  placeholder={state.placeholderPassword}
-                  onChange={onChange}
-                  value={value}
-                />
-              </InputWrapper>
-              <InputLabel className="form-label">{state.labelReplay}</InputLabel>
-            </FormWrapper>
-          )}
-          name="replay"
-          rules={{ required: true }}
-        />
+        <FormWrapper>
+          <InputWrapper errorState>
+            <FormIco src={state.hideIco}/>
+            <Input
+              type="text"
+              id="input-email"
+              placeholder={state.placeholderPassword}
+              {...register('replay')}
+            />
+          </InputWrapper>
+          <InputLabel className="form-label">{errors.replay ? <P>{errors.replay.message}</P> : state.labelReplay }</InputLabel>
+        </FormWrapper>
 
         <Button type="submit" className="test">Sing Up</Button>
 
@@ -129,16 +140,17 @@ const Signup: React.FC<Props> = (props) => {
   );
 };
 
+type StylesProps = {
+  error?: boolean;
+  errorState?: boolean;
+}
+
 export default Signup;
 
 const Body = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 90px calc((1.3% - 9px) * 8) 80px;
-
-  .test {
-    background: tomato;
-  }
 `;
 
 const Form = styled.form`
@@ -207,11 +219,47 @@ const FormWrapper = styled.div`
 
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<StylesProps>`
   display: flex;
   position: relative;
   width: 100%;
   // width: 413px;
+
+  .form__input{
+    ${(p) => {
+    if (p.errorState) {
+      return css`
+        border: 2px solid red;
+      `;
+    }
+      return css`
+        border: none;
+      `;
+  }}
+  
+  position: relative;
+  width: 100%;
+  height: 24px;
+  display: flex;
+  background: #F0F4EF;
+  border-radius: 16px;
+  border: none;
+  padding: 18px 18px 18px 64px;
+  outline: none;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: 0.75px;
+  color: black;
+
+  :focus {
+    border: 2px solid #3d5475;
+  }
+
+}
 `;
 
 const FormIco = styled.img`
@@ -242,6 +290,11 @@ const Input = styled.input`
   line-height: 28px;
   letter-spacing: 0.75px;
   color: black;
+
+  :focus {
+    border: 2px solid #344966;
+  }
+
 `;
 
 const InputLabel = styled.label`
@@ -256,4 +309,27 @@ const InputLabel = styled.label`
   letter-spacing: 0.75px;
   color: #344966;
   margin-top: 9px;
+`;
+
+const P = styled.p`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.75px;
+  color: #C30052;
+  margin: 0;
+`;
+
+const ClearBtn = styled.button`
+  position: absolute;
+  top: 24px;
+  right: 26px;
+  width: 14px;
+  height: 14px;
+  background-image: url(${clearCross});
+  border: none;
 `;

@@ -2,12 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { useForm, Controller } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import mainPicture from '../assets/reg-chel.jpg';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
 import { loginUser } from '../api/users';
 import { useAppDispatch } from '../store/hooks';
-import { putUser } from '../store/redusers/user';
+import { putUser } from '../store/reducers/user';
+import mainPicture from '../assets/reg-chel.jpg';
 
 const state = {
   mailIco,
@@ -30,6 +32,21 @@ interface LocationState {
   };
 }
 
+const warningEmail = {
+  email: 'Wrong email',
+  max: 'Email too long, get another',
+  required: 'Need email',
+};
+const warningPassword = {
+  matches: 'Password must contain at least 1 lowercase letter, at least 1 uppercase letter, and 1 special character',
+  min: 'Password shoud be min 6 charactes',
+  required: 'Need password',
+};
+const loginSchema = yup.object({
+  email: yup.string().email(warningEmail.email).required(warningEmail.required),
+  password: yup.string().required(warningPassword.required),
+});
+
 const Login: React.FC<Props> = (props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -41,9 +58,11 @@ const Login: React.FC<Props> = (props) => {
 
   const {
     handleSubmit,
+    register,
     control,
     formState: { errors },
   } = useForm({
+    resolver: yupResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -55,12 +74,13 @@ const Login: React.FC<Props> = (props) => {
       const response = await loginUser(data);
       dispatch(putUser(response.data.user));
       console.log('RESPONSE', response);
-
+      
       navigate(from.from.pathname, { replace: true });
     } catch (e: any) {
       console.error('Error >>> ', e.response.data);
     }
   };
+  
 
   return (
     <Body>
@@ -75,11 +95,13 @@ const Login: React.FC<Props> = (props) => {
                   type="text"
                   id="input-email"
                   placeholder={state.placeholderEmail}
-                  onChange={onChange}
+                  // onChange={onChange}
                   value={value}
+                  {...register('email')}
+
                 />
               </InputWrapper>
-              <InputLabel className="form-label">{state.labelEmail}</InputLabel>
+              <InputLabel className="form-label">{errors.email ? <P>{errors.email.message}</P> : state.labelEmail }</InputLabel>
             </FormWrapper>
           )}
           name="email"
@@ -95,11 +117,12 @@ const Login: React.FC<Props> = (props) => {
                   type="text"
                   id="input-password"
                   placeholder={state.placeholderPassword}
-                  onChange={onChange}
+                  // onChange={onChange}
                   value={value}
+                  {...register('password')}
                 />
               </InputWrapper>
-              <InputLabel className="form-label">{state.labelPassword}</InputLabel>
+              <InputLabel className="form-label">{errors.password ? <P>{errors.password.message}</P> : state.labelPassword }</InputLabel>
             </FormWrapper>
           )}
           name="password"
@@ -237,4 +260,17 @@ const InputLabel = styled.label`
   letter-spacing: 0.75px;
   color: #344966;
   margin-top: 9px;
+`;
+
+const P = styled.p`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.75px;
+  color: #C30052;
+  margin: 0;
 `;

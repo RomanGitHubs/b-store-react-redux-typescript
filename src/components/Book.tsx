@@ -10,21 +10,26 @@ import star from '../assets/star.svg';
 import starFilled from '../assets/star-filled.svg';
 
 type Props = {
-  cover: string;
-  title: string;
-  author: string;
-  rating: number;
-  price: string;
-  new: boolean;
-  bestsaller: boolean;
-  isFavorite: boolean;
-  available: boolean;
+  id?: number;
+  cover?: string;
+  title?: string;
+  author?: string;
+  rating?: number;
+  price?: string;
+  new?: boolean;
+  bestsaller?: boolean;
+  isFavorite?: boolean;
+  available?: boolean;
 };
 
 const Book: React.FC<Props> = (props) => {
   const user = useAppSelector((state) => state.userSlice.user);
   console.log(props.available);
-  
+
+  // const handleAddCart = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  //   console.log(e.target);
+  //   console.log('Added to cart');
+  // };
 
   return (
     <StyledContainer
@@ -103,11 +108,12 @@ const Book: React.FC<Props> = (props) => {
       </div>
       { props.available === true
         ? <Button
-          title={props.price}
+          title={`$${props.price}USD`}
           type='catalog'
+          id={props.id}
         /> : <Button
           title={'Not available'}
-          type='catalog'
+          type='not-availble'
         /> }
 
     </StyledContainer>

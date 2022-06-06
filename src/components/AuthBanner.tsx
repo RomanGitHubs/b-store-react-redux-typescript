@@ -35,7 +35,6 @@ const Body = styled.div`
   border-radius: 16px;
   position: relative;
   z-index: 1;
-
 `;
 
 const Wrapper = styled.div`

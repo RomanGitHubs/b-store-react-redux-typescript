@@ -1,18 +1,23 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-type ButtonTypes = 'small' | 'large' | 'catalog';
+type ButtonTypes = 'small' | 'large' | 'catalog' | 'not-availble';
 
 type Props = {
   title: string;
   className?:string;
   type?: ButtonTypes;
+  id?: number;
 };
 
 const Button: React.FC<Props> = (props) => {
+  const handleAddCart = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    console.log(e.target);
+  };
+
   return (
-    <Body type={props.type}>
-      $ {props.title} USD
+    <Body type={props.type} id={`${props.id}`} onClick={(e) => handleAddCart(e)} >
+      {props.title}
     </Body>
   );
 };
@@ -42,8 +47,15 @@ const Body = styled.div<StylesProps>`
     switch (props.type) {
     case 'large':
       return css``;
-    case 'small':
-      return css``;
+    case 'not-availble':
+      return css`
+        width: 305px;
+        height: 48px;
+        font-size: 20px;
+        line-height: 28px;  
+        background: #B9BAC3;
+        cursor: auto;
+      `;
     case 'catalog':
       return css`
         width: 305px;

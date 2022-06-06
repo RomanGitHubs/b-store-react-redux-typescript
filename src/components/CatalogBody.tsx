@@ -3,24 +3,14 @@ import styled from 'styled-components';
 import rightArrow from '../assets/right-arrow.svg';
 import downArrow from '../assets/down-arrow.svg';
 import Book from './Book';
-import narnia from '../assets/narnia.png';
-import psychlogy from '../assets/psychlogy.png';
-import doriangray from '../assets/doriangray.png';
-import subtleart from '../assets/subtleart.png';
-import twotowers from '../assets/twotowers.png';
+import { useAppSelector } from '../store/hooks';
 
 type Props = {};
 
 const CatalogBody: React.FC<Props> = (props) => {
-  const initialStateBook = [
-    { id: 1, cover: narnia, title: 'The Chronicles of Narnia', author: 'C. S. Lewis', rating: 5, price: '14.99', new: false, bestsaller: false, isFavorite: true, available: true },
-    { id: 2, cover: psychlogy, title: 'The Psychlogy of Money', author: 'Morgan Housel', rating: 4, price: '14.99', new: false, bestsaller: true, isFavorite: false, available: true },
-    { id: 3, cover: doriangray, title: 'The Picture of Dorian Gray', author: 'Oscar Wilde', rating: 0, price: '14.99', new: true, bestsaller: false, isFavorite: true, available: false },
-    { id: 4, cover: subtleart, title: 'The Subtle art of not giving a fuck', author: 'Mark Manson', rating: 5, price: '14.99', new: true, bestsaller: true, isFavorite: false, available: true },
-    { id: 5, cover: twotowers, title: 'The Two towers', author: 'J. R. R. Tolkien', rating: 5, price: '14.99', new: false, bestsaller: false, isFavorite: true, available: true },
-  ];
+  const books = useAppSelector((state) => state.bookSlice.books);
+  console.log( books);
 
-  const [books, setBooks] = useState(initialStateBook);
   const [genre, setGenre] = useState(false);
   const [price, setPrice] = useState(false);
   const [sort, setSort] = useState(false);
@@ -51,7 +41,7 @@ const CatalogBody: React.FC<Props> = (props) => {
           </Filter>
         </Filters>
       </Header>
-      <Content>
+      {books ? <Content>
         {books.map((book) =>
           <Book
             key={book.id}
@@ -66,7 +56,7 @@ const CatalogBody: React.FC<Props> = (props) => {
             available={book.available}
           />,
         )}
-      </Content>
+      </Content> : null }
     </Body>
   );
 };
@@ -130,5 +120,4 @@ const Content = styled.div`
   color: #0D1821;
   align-items: center;
   margin-top: 40px;
-  justify-content: center;
 `;

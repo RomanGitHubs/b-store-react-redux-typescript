@@ -1,5 +1,5 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { User } from '../store/models/user';
+import { User } from '../models/user';
 import axios from '../api';
 
 type UserResponse = {

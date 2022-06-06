@@ -11,8 +11,10 @@ import Header from './pages/Header';
 import Footer from './pages/Footer';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { getUser } from './api/users';
-import { putUser } from './store/redusers/user';
+import { getBooks } from './api/books';
+import { putUser } from './store/reducers/user';
 import Loader from './components/Loader';
+import { putBooks } from './store/reducers/book';
 
 const App: React.FC = (props) => {
   const dispatch = useAppDispatch();
@@ -22,10 +24,15 @@ const App: React.FC = (props) => {
     (async () => {
       try {
         const token = localStorage.getItem('token');
+        const books = await getBooks();
+        dispatch(putBooks(books));
+        console.log(books);
+
         if (!token) {
           setReady(true);
         } else {
           const user = await getUser();
+
           dispatch(putUser(user.data));
           console.log(user.data);
           setReady(true);
