@@ -1,15 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import rightArrow from '../assets/right-arrow.svg';
-import downArrow from '../assets/down-arrow.svg';
+
 import Book from './Book';
+import Filters from './Filters';
 import { useAppSelector } from '../store/hooks';
+import { getBooks } from '../api/books';
+import { putBooks } from '../store/reducers/book';
+import { useDispatch } from 'react-redux';
+import Loader from './Loader';
+import Pagination from './Pagination';
 
 type Props = {};
 
 const CatalogBody: React.FC<Props> = (props) => {
+  const dispatch = useDispatch();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const books = await getBooks();
+        console.log(books.data);
+        dispatch(putBooks(books.data));
+        setReady(true);
+      } catch (e: any) {
+        console.error('Error >>> ', e.response.data);
+      } finally {
+        setReady(true);
+      }
+    })();
+  }, []);
+
   const books = useAppSelector((state) => state.bookSlice.books);
-  console.log( books);
 
   const [genre, setGenre] = useState(false);
   const [price, setPrice] = useState(false);
@@ -29,34 +51,27 @@ const CatalogBody: React.FC<Props> = (props) => {
     <Body >
       <Header>
         <Title>Catalog</Title>
-        <Filters>
-          <Filter onClick={handleOpenGenre}>Genre
-            <img src={ genre ? downArrow : rightArrow}></img>
-          </Filter>
-          <Filter onClick={handleOpenPrice}>Price
-            <img src={ price ? downArrow : rightArrow}></img>
-          </Filter>
-          <Filter onClick={handleOpenSort}>Sort by price
-            <img src={ sort ? downArrow : rightArrow}></img>
-          </Filter>
-        </Filters>
+        <Filters />
+
       </Header>
       {books ? <Content>
         {books.map((book) =>
           <Book
             key={book.id}
-            cover={book.cover}
+            photo={book.photo}
             title={book.title}
             author={book.author}
             rating={book.rating}
             price={book.price}
-            new={book.new}
+            news={book.news}
             bestsaller={book.bestsaller}
             isFavorite={book.isFavorite}
             available={book.available}
           />,
         )}
       </Content> : null }
+      {books ? <Pagination /> : null }
+
     </Body>
   );
 };
@@ -85,27 +100,6 @@ const Title = styled.h2`
   line-height: 60px;
   color: #0D1821;
   margin: 0;
-`;
-
-const Filters = styled.div`
-  display: flex;
-  width: 628px;
-  height: 48px;
-  justify-content: space-between;
-`;
-
-const Filter = styled.div`
-  display: flex;
-  width: 166px;
-  height: 48px;
-  max-width: 196px;
-  background: #e6e6e6;
-  font-family: 'Poppins';
-  border-radius: 16px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 15px;
-  /* padding-right: 8px; */
 `;
 
 const Content = styled.div`

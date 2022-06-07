@@ -12,7 +12,7 @@ import mailIco from '../assets/mail-ico.svg';
 import hideIco from '../assets/hide-ico.svg';
 import clearCross from '../assets/close-cross-input.svg';
 
-const state = {
+const constans = {
   mailIco,
   hideIco,
   placeholderEmail: 'Email',
@@ -54,12 +54,9 @@ const Signup: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [errorState, setError] = useState(false);
-
   const {
     handleSubmit,
     register,
-    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signupSchema),
@@ -92,44 +89,42 @@ const Signup: React.FC<Props> = (props) => {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormTitle>Sign Up</FormTitle>
         <FormWrapper>
-          <InputWrapper errorState>
-            <FormIco src={state.mailIco}/>
+          <InputWrapper errorState={!!errors.email}>
+            <FormIco src={constans.mailIco}/>
             <input className='form__input'
               type="text"
               id="input-email"
-              placeholder={state.placeholderEmail}
+              placeholder={constans.placeholderEmail}
               {...register('email')}
-              // onBlur={handleRequest}
-
             />
           </InputWrapper>
-          <InputLabel className="form-label" >{errors.email ? <P>{errors.email.message}</P> : state.labelEmail }</InputLabel>
+          <InputLabel className="form-label" >{errors.email ? <ErrMessage>{errors.email.message}</ErrMessage> : constans.labelEmail }</InputLabel>
         </FormWrapper>
 
         <FormWrapper>
-          <InputWrapper errorState>
-            <FormIco src={state.hideIco}/>
-            <Input
+          <InputWrapper errorState={!!errors.password}>
+            <FormIco src={constans.hideIco}/>
+            <input className='form__input'
               type="text"
               id="input-email"
-              placeholder={state.placeholderPassword}
+              placeholder={constans.placeholderPassword}
               {...register('password')}
             />
           </InputWrapper>
-          <InputLabel className="form-label">{errors.password ? <P>{errors.password.message}</P> : state.labelPassword }</InputLabel>
+          <InputLabel className="form-label">{errors.password ? <ErrMessage>{errors.password.message}</ErrMessage> : constans.labelPassword }</InputLabel>
         </FormWrapper>
 
         <FormWrapper>
-          <InputWrapper errorState>
-            <FormIco src={state.hideIco}/>
-            <Input
+          <InputWrapper errorState={!!errors.replay}>
+            <FormIco src={constans.hideIco}/>
+            <input className='form__input'
               type="text"
               id="input-email"
-              placeholder={state.placeholderPassword}
+              placeholder={constans.placeholderPasswordReplay}
               {...register('replay')}
             />
           </InputWrapper>
-          <InputLabel className="form-label">{errors.replay ? <P>{errors.replay.message}</P> : state.labelReplay }</InputLabel>
+          <InputLabel className="form-label">{errors.replay ? <ErrMessage>{errors.replay.message}</ErrMessage> : constans.labelReplay }</InputLabel>
         </FormWrapper>
 
         <Button type="submit" className="test">Sing Up</Button>
@@ -141,7 +136,6 @@ const Signup: React.FC<Props> = (props) => {
 };
 
 type StylesProps = {
-  error?: boolean;
   errorState?: boolean;
 }
 
@@ -231,11 +225,11 @@ const InputWrapper = styled.div<StylesProps>`
       return css`
         border: 2px solid red;
       `;
-    }
+    } else {
       return css`
         border: none;
       `;
-  }}
+    }}}
   
   position: relative;
   width: 100%;
@@ -243,7 +237,6 @@ const InputWrapper = styled.div<StylesProps>`
   display: flex;
   background: #F0F4EF;
   border-radius: 16px;
-  border: none;
   padding: 18px 18px 18px 64px;
   outline: none;
   align-items: center;
@@ -311,7 +304,7 @@ const InputLabel = styled.label`
   margin-top: 9px;
 `;
 
-const P = styled.p`
+const ErrMessage = styled.p`
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;

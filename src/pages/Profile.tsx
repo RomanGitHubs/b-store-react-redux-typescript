@@ -112,7 +112,7 @@ const Profile: React.FC<Props> = (props) => {
 
   let userUrl = `${profileIco}`;
   if (user?.photo) {
-    userUrl = `http://localhost:5000/static/${user.photo}`;
+    userUrl = user?.photo;
   }
 
   return (

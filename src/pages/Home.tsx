@@ -17,7 +17,6 @@ const Home: React.FC<Props> = (props) => {
     <Body>
       <Banner />
       <CatalogBody />
-      <Pagination />
       {user ? null : <AuthBanner />}
     </Body>
   );

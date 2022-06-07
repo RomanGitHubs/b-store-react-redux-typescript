@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useForm, Controller } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,7 +11,7 @@ import { useAppDispatch } from '../store/hooks';
 import { putUser } from '../store/reducers/user';
 import mainPicture from '../assets/reg-chel.jpg';
 
-const state = {
+const constans = {
   mailIco,
   hideIco,
   placeholderEmail: 'Email',
@@ -80,7 +80,6 @@ const Login: React.FC<Props> = (props) => {
       console.error('Error >>> ', e.response.data);
     }
   };
-  
 
   return (
     <Body>
@@ -89,19 +88,18 @@ const Login: React.FC<Props> = (props) => {
         <Controller control={control}
           render={({ field: { onChange, value } }) => (
             <FormWrapper>
-              <InputWrapper>
-                <FormIco src={state.mailIco} />
-                <Input
+              <InputWrapper errorState={!!errors.email}>
+                <FormIco src={constans.mailIco} />
+                <input className='form__input'
                   type="text"
                   id="input-email"
-                  placeholder={state.placeholderEmail}
-                  // onChange={onChange}
+                  placeholder={constans.placeholderEmail}
                   value={value}
                   {...register('email')}
 
                 />
               </InputWrapper>
-              <InputLabel className="form-label">{errors.email ? <P>{errors.email.message}</P> : state.labelEmail }</InputLabel>
+              <InputLabel className="form-label">{errors.email ? <ErrMessage>{errors.email.message}</ErrMessage> : constans.labelEmail }</InputLabel>
             </FormWrapper>
           )}
           name="email"
@@ -111,18 +109,18 @@ const Login: React.FC<Props> = (props) => {
         <Controller control={control}
           render={({ field: { onChange, value } }) => (
             <FormWrapper>
-              <InputWrapper>
-                <FormIco src={state.hideIco} />
-                <Input
+              <InputWrapper errorState={!!errors.password}>
+                <FormIco src={constans.hideIco} />
+                <input className='form__input'
                   type="text"
                   id="input-password"
-                  placeholder={state.placeholderPassword}
+                  placeholder={constans.placeholderPassword}
                   // onChange={onChange}
                   value={value}
                   {...register('password')}
                 />
               </InputWrapper>
-              <InputLabel className="form-label">{errors.password ? <P>{errors.password.message}</P> : state.labelPassword }</InputLabel>
+              <InputLabel className="form-label">{errors.password ? <ErrMessage>{errors.password.message}</ErrMessage> : constans.labelPassword }</InputLabel>
             </FormWrapper>
           )}
           name="password"
@@ -138,6 +136,10 @@ const Login: React.FC<Props> = (props) => {
 };
 
 export default Login;
+
+type StylesProps = {
+  errorState?: boolean;
+}
 
 const Body = styled.div`
   display: flex;
@@ -211,11 +213,46 @@ const FormWrapper = styled.div`
 
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<StylesProps>`
   display: flex;
   position: relative;
   width: 100%;
   // width: 413px;
+
+  .form__input{
+    ${(p) => {
+    if (p.errorState) {
+      return css`
+        border: 2px solid red;
+      `;
+    } else {
+      return css`
+        border: none;
+      `;
+    }}}
+  
+  position: relative;
+  width: 100%;
+  height: 24px;
+  display: flex;
+  background: #F0F4EF;
+  border-radius: 16px;
+  padding: 18px 18px 18px 64px;
+  outline: none;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: 0.75px;
+  color: black;
+
+  :focus {
+    border: 2px solid #3d5475;
+  }
+
+}
 `;
 
 const FormIco = styled.img`
@@ -262,7 +299,7 @@ const InputLabel = styled.label`
   margin-top: 9px;
 `;
 
-const P = styled.p`
+const ErrMessage = styled.p`
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;

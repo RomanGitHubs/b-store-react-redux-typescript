@@ -6,7 +6,7 @@ type Books = {
 };
 
 const initialState: Books = {
-  books: [],
+  books: null,
 };
 
 const book = createSlice({

@@ -9,7 +9,6 @@ const Catalog: React.FC<Props> = (props) => {
   return (
     <Body >
       <CatalogBody />
-      <Pagination />
     </Body>
   );
 };

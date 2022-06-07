@@ -1,12 +1,14 @@
 export type Book = {
-  id?: number;
-  cover?: string;
-  title?: string;
-  author?: string;
-  rating?: number;
-  price?: string;
-  new?: boolean;
-  bestsaller?: boolean;
-  isFavorite?: boolean;
-  available?: boolean;
+  id: number;
+  photo: string;
+  author: string;
+  title: string;
+  description: string;
+  cover: boolean;
+  rating: number;
+  price: number;
+  available: boolean;
+  isFavorite: boolean;
+  news: boolean;
+  bestsaller: boolean;
 }

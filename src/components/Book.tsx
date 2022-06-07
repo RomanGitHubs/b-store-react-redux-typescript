@@ -10,16 +10,16 @@ import star from '../assets/star.svg';
 import starFilled from '../assets/star-filled.svg';
 
 type Props = {
-  id?: number;
-  cover?: string;
-  title?: string;
-  author?: string;
-  rating?: number;
-  price?: string;
-  new?: boolean;
-  bestsaller?: boolean;
-  isFavorite?: boolean;
-  available?: boolean;
+  key: number;
+  photo: string;
+  title: string;
+  author: string;
+  rating: number;
+  price: number;
+  news: boolean;
+  bestsaller: boolean;
+  isFavorite: boolean;
+  available: boolean;
 };
 
 const Book: React.FC<Props> = (props) => {
@@ -33,7 +33,7 @@ const Book: React.FC<Props> = (props) => {
 
   return (
     <StyledContainer
-      cover={props.cover}
+      photo={props.photo}
       isFavorite={props.isFavorite}
       likeIco={favoriteButton}
       unlikeIco={favoriteButtonPressed}
@@ -45,72 +45,70 @@ const Book: React.FC<Props> = (props) => {
       <div className="book__cover">
         { user ? <button className="book__favorite"></button> : null }
         <div className="book__attributies">
-          { props.new ? <img className='book__attributies-new' src={newBook}></img> : null}
+          { props.news ? <img className='book__attributies-new' src={newBook}></img> : null}
           { props.bestsaller ? <img className='book__attributies-best' src={bestsellerBook}></img> : null}
         </div>
       </div>
       <p className="book__title">{props.title}</p>
       <p className="book__author">{props.author}</p>
       <div className="book__rating">
-        <div className="book__rating-stars">
-
-          { props.rating === 0
-            ? <>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-            </> : null}
-          { props.rating === 1
-            ? <>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-            </> : null}
-          { props.rating === 2
-            ? <>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-            </> : null}
-          { props.rating === 3
-            ? <>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={star}></img>
-              <img className="star" src={star}></img>
-            </> : null}
-          { props.rating === 4
-            ? <>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={star}></img>
-            </> : null}
-          { props.rating === 5
-            ? <>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-              <img className="star" src={starFilled}></img>
-            </> : null}
-
-        </div>
+        {props.rating ?
+          <div className="book__rating-stars">
+            { +props.rating === 0
+              ? <>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+              </> : null}
+            { +props.rating === 1
+              ? <>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+              </> : null}
+            { +props.rating === 2
+              ? <>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+              </> : null}
+            { +props.rating === 3
+              ? <>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={star}></img>
+                <img className="star" src={star}></img>
+              </> : null}
+            { +props.rating === 4
+              ? <>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={star}></img>
+              </> : null}
+            { +props.rating === 5
+              ? <>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+                <img className="star" src={starFilled}></img>
+              </> : null}
+          </div> : null }
         <div className="book__rating-number">{props.rating}.0</div>
       </div>
       { props.available === true
         ? <Button
-          title={`$${props.price}USD`}
+          title={`$ ${props.price * 100} USD`}
           type='catalog'
-          id={props.id}
         /> : <Button
           title={'Not available'}
           type='not-availble'
@@ -121,7 +119,7 @@ const Book: React.FC<Props> = (props) => {
 };
 
 type StylesProps = {
-  cover?: string;
+  photo?: string;
   isFavorite?: boolean;
   likeIco?: string;
   unlikeIco?: string;
@@ -143,7 +141,7 @@ const StyledContainer = styled.div<StylesProps>`
       display: flex;
       width: 305px;
       height: 448px;
-      background: url(${(props) => props.cover});
+      background: url(${(props) => props.photo});
       background-size: cover;
       border-radius: 16px;
       margin-bottom: 30px;

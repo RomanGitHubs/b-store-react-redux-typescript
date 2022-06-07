@@ -24,9 +24,7 @@ const App: React.FC = (props) => {
     (async () => {
       try {
         const token = localStorage.getItem('token');
-        const books = await getBooks();
-        dispatch(putBooks(books));
-        console.log(books);
+
 
         if (!token) {
           setReady(true);
