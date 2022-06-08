@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
+import { useDispatch } from 'react-redux';
 import Book from './Book';
 import Filters from './Filters';
 import { useAppSelector } from '../store/hooks';
 import { getBooks } from '../api/books';
+import { getGenres } from '../api/genres';
 import { putBooks } from '../store/reducers/book';
-import { useDispatch } from 'react-redux';
+import { putGenres } from '../store/reducers/genre';
 import Loader from './Loader';
 import Pagination from './Pagination';
 
@@ -14,7 +15,6 @@ type Props = {};
 
 const CatalogBody: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -22,30 +22,13 @@ const CatalogBody: React.FC<Props> = (props) => {
         const books = await getBooks();
         console.log(books.data);
         dispatch(putBooks(books.data));
-        setReady(true);
       } catch (e: any) {
         console.error('Error >>> ', e.response.data);
-      } finally {
-        setReady(true);
       }
     })();
   }, []);
 
   const books = useAppSelector((state) => state.bookSlice.books);
-
-  const [genre, setGenre] = useState(false);
-  const [price, setPrice] = useState(false);
-  const [sort, setSort] = useState(false);
-
-  const handleOpenGenre = () => {
-    setGenre((genre) => !genre);
-  };
-  const handleOpenPrice = () => {
-    setPrice((price) => !price);
-  };
-  const handleOpenSort = () => {
-    setSort((sort) => !sort);
-  };
 
   return (
     <Body >

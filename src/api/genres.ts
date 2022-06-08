@@ -1,10 +1,10 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { Book } from '../models/book';
+import { Genre } from '../models/genre';
 
 const bookAxios = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-export const getBooks = (): Promise<AxiosResponse<Book[]>> => {
-  return bookAxios.get('/books');
+export const getGenres = (): Promise<AxiosResponse<Genre[]>> => {
+  return bookAxios.get('/genres');
 };

@@ -5,13 +5,27 @@ import downArrow from '../assets/down-arrow.svg';
 
 type Props = {
   title?: string;
-
+  onClick?: () => void;
+  children?: React.ReactNode
 };
 
 const Filter: React.FC<Props> = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpenState = () => {
+    setIsOpen(!isOpen);
+    console.log(isOpen);
+    
+  };
   return (
-    <Body>{props.title}
-      <img src={rightArrow}></img>
+    <Body >
+      <div className="title" onClick={toggleOpenState}>
+        {props.title}
+        <img src={rightArrow}></img>
+      </div>
+      {isOpen && <div>
+        {props.children}
+      </div>}
     </Body>
   );
 };
@@ -24,10 +38,28 @@ const Body = styled.div`
   height: 48px;
   max-width: 196px;
   background: #e6e6e6;
-  font-family: 'Poppins';
   border-radius: 16px;
   align-items: center;
   justify-content: space-between;
   padding: 0 15px;
-  /* padding-right: 8px; */
+  position: relative;
+
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 28px;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.75px;
+  color: #344966;
+
+  .title {
+    display: flex;
+    width: 166px;
+    background: #e6e6e6;
+    font-family: 'Poppins';
+    align-items: center;
+    justify-content: space-between;
+  }
 `;

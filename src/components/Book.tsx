@@ -24,7 +24,6 @@ type Props = {
 
 const Book: React.FC<Props> = (props) => {
   const user = useAppSelector((state) => state.userSlice.user);
-  console.log(props.available);
 
   // const handleAddCart = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
   //   console.log(e.target);
