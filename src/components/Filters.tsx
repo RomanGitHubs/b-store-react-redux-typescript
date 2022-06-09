@@ -28,23 +28,28 @@ const Filters: React.FC<Props> = (props) => {
     id: string;
   }
 
-  const sendedArray: Id[] = [];
+  const [useGenre, setUseGenre] = useState([]);
+  const sendedGenres: Id[] = [];
 
   const genres = useAppSelector((state) => state.genreSlice.genre);
 
   const handleSelect: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.stopPropagation();
     const id: any = e.target.id;
+    console.log('TARGET >>> ', 'id: ', id, e.target);
+    console.log(sendedGenres.includes(id));
 
-    if (!sendedArray.includes(id)) {
-      sendedArray.push(id);
-    } else {
-      const index = sendedArray.findIndex((id) => id);
-      sendedArray.splice(index - 1, 1);
+    if (sendedGenres.includes(id)) {
+      sendedGenres.pop();
     }
+    sendedGenres.push(id);
 
-    console.log('SENDed Genres >>> ', sendedArray);
+    console.log('SENDed Genres >>> ', sendedGenres);
   };
+
+  // const handleSelect: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+
+  // }
 
   return (
     <Body>
@@ -56,9 +61,10 @@ const Filters: React.FC<Props> = (props) => {
               <span>{genre.genre}</span>
             </Genre>,
           )}
-          <Button title="Accept"/>
+          <Button title="Accept" onClick={()=>{}}/>
         </div> : null }
       </Filter>
+
       <Filter title="Price" ></Filter>
       <Filter title="Sort by price" ></Filter>
     </Body>

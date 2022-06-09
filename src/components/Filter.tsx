@@ -5,7 +5,7 @@ import downArrow from '../assets/down-arrow.svg';
 
 type Props = {
   title?: string;
-  onClick?: () => void;
+  onClick?: (e: any) => Event;
   children?: React.ReactNode
 };
 
@@ -15,7 +15,6 @@ const Filter: React.FC<Props> = (props) => {
   const toggleOpenState = () => {
     setIsOpen(!isOpen);
     console.log(isOpen);
-    
   };
   return (
     <Body >

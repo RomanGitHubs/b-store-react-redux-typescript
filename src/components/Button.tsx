@@ -8,15 +8,12 @@ type Props = {
   className?:string;
   type?: ButtonTypes;
   id?: number;
+  onClick?: () => void;
 };
 
 const Button: React.FC<Props> = (props) => {
-  const handleAddCart = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    console.log(e.target);
-  };
-
   return (
-    <Body type={props.type} id={`${props.id}`} onClick={(e) => handleAddCart(e)} >
+    <Body type={props.type} id={`${props.id}`} onClick={(e) => console.log(e.target)} >
       {props.title}
     </Body>
   );
