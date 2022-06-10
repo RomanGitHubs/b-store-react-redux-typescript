@@ -36,7 +36,7 @@ const Body = styled.div`
   width: 166px;
   height: 48px;
   max-width: 196px;
-  background: #e6e6e6;
+  background: #f0f0f0;
   border-radius: 16px;
   align-items: center;
   justify-content: space-between;
@@ -56,7 +56,7 @@ const Body = styled.div`
   .title {
     display: flex;
     width: 166px;
-    background: #e6e6e6;
+    background: #f0f0f0;
     font-family: 'Poppins';
     align-items: center;
     justify-content: space-between;

@@ -1,13 +1,20 @@
 import React, { Children, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { getGenres } from '../api/genres';
 import { useAppSelector } from '../store/hooks';
 import { putGenres } from '../store/reducers/genre';
 import Button from './Button';
 import Filter from './Filter';
+import { Book } from '../models/book';
+import { putBooks } from '../store/reducers/book';
+import Slider from './Slider';
 
-type Props = {};
+type Props = {
+  minPrice: number;
+  maxPrice: number;
+};
 
 const Filters: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
@@ -24,32 +31,38 @@ const Filters: React.FC<Props> = (props) => {
     })();
   }, []);
 
-  type Id = {
-    id: string;
-  }
-
-  const [useGenre, setUseGenre] = useState([]);
-  const sendedGenres: Id[] = [];
+  const [usedGenre, setUseGenre] = useState<string[]>([]);
 
   const genres = useAppSelector((state) => state.genreSlice.genre);
 
   const handleSelect: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.stopPropagation();
-    const id: any = e.target.id;
+    const id = e.target.id;
     console.log('TARGET >>> ', 'id: ', id, e.target);
-    console.log(sendedGenres.includes(id));
 
-    if (sendedGenres.includes(id)) {
-      sendedGenres.pop();
+    if (usedGenre.includes(id)) {
+      const find = usedGenre.findIndex((item) => item === id);
+      console.log('Find >>> ', find);
+      usedGenre.splice(find, 1);
+      setUseGenre(usedGenre);
+    } else {
+      usedGenre.push(id);
+      setUseGenre(usedGenre);
     }
-    sendedGenres.push(id);
 
-    console.log('SENDed Genres >>> ', sendedGenres);
+    (async () => {
+      const getBooks = (): Promise<AxiosResponse<Book[]>> => {
+        return axios.create().get(`http://localhost:5000/api/books/?genre=${usedGenre}`);
+      };
+      const filtred = await getBooks();
+      console.log(filtred.data);
+      dispatch(putBooks(filtred.data));
+    })();
+
+    console.log('SENDed Genres >>> ', usedGenre);
   };
 
-  // const handleSelect: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 
-  // }
 
   return (
     <Body>
@@ -57,16 +70,36 @@ const Filters: React.FC<Props> = (props) => {
         { genres ? <div className="genre-list">
           { genres.map((genre) =>
             <Genre key={genre.id}>
-              <input type="checkbox" className="checkBox" onChange={handleSelect} id={`${genre.id}`}/>
+              <input type="checkbox" className="checkBox" checked={usedGenre.includes(`${genre.id}`)} onChange={handleSelect} id={`${genre.id}`}/>
               <span>{genre.genre}</span>
             </Genre>,
           )}
-          <Button title="Accept" onClick={()=>{}}/>
         </div> : null }
       </Filter>
 
-      <Filter title="Price" ></Filter>
-      <Filter title="Sort by price" ></Filter>
+      <Filter title="Price" >
+        <Slider
+          min={props.minPrice}
+          max={props.maxPrice}
+          onChange={({ min, max }: { min: number; max: number }) => {
+            console.log(`min = ${min}, max = ${max}`);
+            // const params = new URLSearchParams([['price', `${min},${max}`]]);
+            // console.log(params);
+            // (async () => {
+            //   const getBooks = (): Promise<AxiosResponse<Book[]>> => {
+            //     return axios.create().get('http://localhost:5000/api/books', { params: { price: `${min},${max}` } });
+            //   };
+            //   const filtred = await getBooks();
+            //   console.log(filtred.data);
+            //   dispatch(putBooks(filtred.data));
+            // })();
+          }}
+        />
+      </Filter>
+      <Filter title="Sort by price" >
+        <div className="slider">
+        </div>
+      </Filter>
     </Body>
   );
 };
@@ -82,7 +115,7 @@ const Body = styled.div`
   .genre-list{
     display: flex;
     flex-direction: column;
-    background-color: #e6e6e6;
+    background-color: #f0f0f0;
     position: absolute;
     left: 0px;
     top: 60px;
@@ -96,6 +129,17 @@ const Body = styled.div`
     height: 24px;
     width: 24px;
   }
+  /* .slider {
+    position: absolute;
+    width: 413px;
+    height: 151px;
+    left: 0px;
+    top: 60px;
+    background: #f0f0f0;
+    border-radius: 16px;
+    z-index: 2;
+
+  } */
 `;
 const Genre = styled.div`
   display: flex;

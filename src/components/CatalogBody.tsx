@@ -30,11 +30,24 @@ const CatalogBody: React.FC<Props> = (props) => {
 
   const books = useAppSelector((state) => state.bookSlice.books);
 
+  let minPrice = 0;
+  let maxPrice = 0;
+  const priceArray: number[] = [];
+  if (books) {
+    for (let i = 0; i < books.length; i++) {
+      priceArray.push(Number(books[i].price * 100));
+      console.log(typeof (books[i].price));
+    }
+    console.log(priceArray);
+    minPrice = Math.min(...priceArray);
+    maxPrice = Math.max(...priceArray);
+  }
+
   return (
     <Body >
       <Header>
         <Title>Catalog</Title>
-        <Filters />
+        <Filters minPrice={minPrice} maxPrice={maxPrice}/>
 
       </Header>
       {books ? <Content>
