@@ -42,6 +42,7 @@ const Body = styled.div`
   justify-content: space-between;
   padding: 0 15px;
   position: relative;
+  cursor: pointer;
 
   font-family: 'Poppins', sans-serif;
   font-style: normal;

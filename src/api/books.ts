@@ -5,6 +5,6 @@ const bookAxios = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-export const getBooks = (): Promise<AxiosResponse<Book[]>> => {
-  return bookAxios.get('/books');
+export const getBooks = (params: any): Promise<AxiosResponse<Book[]>> => {
+  return bookAxios.get('/books', { params });
 };

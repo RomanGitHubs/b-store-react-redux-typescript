@@ -15,11 +15,18 @@ type Props = {};
 
 const CatalogBody: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
+  const genres = useAppSelector((state) => state.genreSlice.genre);
+  const price = useAppSelector((state) => state.priceSlice.price);
+  const sort = useAppSelector((state) => state.sortSlice.sort);
 
   useEffect(() => {
     (async () => {
       try {
-        const books = await getBooks();
+        const books = await getBooks({
+          genres: genres?.map((genre) => genre.isChecked === true),
+          price,
+          sort,
+        });
         console.log(books.data);
         dispatch(putBooks(books.data));
       } catch (e: any) {
