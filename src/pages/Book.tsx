@@ -7,18 +7,25 @@ import { useAppSelector } from '../store/hooks';
 
 type Props = {};
 
-const Catalog: React.FC<Props> = (props) => {
+const Book: React.FC<Props> = (props) => {
   const user = useAppSelector((state) => state.userSlice.user);
+  const book = useAppSelector((state) => state.bookSlice.books);
 
+  console.log(book);
+  
   return (
     <Body >
-      <CatalogBody />
+      <div>
+        <img></img>
+        <div>Description</div>
+      </div>
       {user ? null : <AuthBanner />}
+      <div>Recomendation</div>
     </Body>
   );
 };
 
-export default Catalog;
+export default Book;
 
 const Body = styled.div`
   display: flex;

@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { getGenres } from '../api/genres';
-import { useAppSelector } from '../store/hooks';
-import { putGenres } from '../store/reducers/genre';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { putGenr, putPrice } from '../store/reducers/filters';
 import Filter from './Filter';
 import { Genre } from '../models/genre';
 import { putBooks } from '../store/reducers/book';
@@ -13,7 +13,7 @@ import SortFilter from './SortFilter';
 import emptyChBox from '../assets/checkbox-empty.svg';
 import fillChBox from '../assets/checkbox-checked.svg';
 import { getBooks } from '../api/books';
-import { putPrice } from '../store/reducers/price';
+import { Book } from '../models/book';
 
 type Props = {
   minPrice: number;
@@ -21,18 +21,22 @@ type Props = {
 };
 
 const Filters: React.FC<Props> = (props) => {
-  const dispatch = useDispatch();
-  const [usedGenre, setUseGenre] = useState<Genre[]>([]);
-  const genres = useAppSelector((state) => state.genreSlice.genre);
-  const price = useAppSelector((state) => state.priceSlice.price);
-  const sort = useAppSelector((state) => state.sortSlice.sort);
+  const dispatch = useAppDispatch();
+  const [loadGenre, setLoadGenre] = useState<Genre[]>([]);
+
+  const usedGenre: string[] = [];
+
+  const { genre, price, sort } = useAppSelector((state) => state.filterSlice);
 
   useEffect(() => {
     (async () => {
       try {
         const genres = await getGenres();
-        console.log(genres.data);
-        dispatch(putGenres(genres.data));
+        console.log('Load Genres >>> ', genres.data);
+
+        setLoadGenre(genres.data);
+        console.log('Load Genres >>> ', loadGenre);
+        // dispatch(putGenres(genres.data));
       } catch (e: any) {
         console.error('Error >>> ', e.response.data);
       }
@@ -43,27 +47,18 @@ const Filters: React.FC<Props> = (props) => {
     e.stopPropagation();
 
     const id = e.target.id;
-    console.log('TARGET >>> ', 'id: ', id, e.target);
+    console.log('TARGET ID >>> ', id);
+    console.log('PRE SENDed Genres >>> ', usedGenre);
 
-    // if (usedGenre.includes(id)) {
-    //   const find = usedGenre.findIndex((item) => item === id);
-    //   console.log('Find >>> ', find);
-    //   usedGenre.splice(find, 1);
-    //   setUseGenre(usedGenre);
-    // } else {
-    //   usedGenre.push(id);
-    //   setUseGenre(usedGenre);
-    // }
-    // dispatch(putGenres(usedGenre));
+    if (usedGenre.includes(id)) {
+      const find = usedGenre.findIndex((item) => item === id);
+      console.log('Find >>> ', find);
+      usedGenre.splice(find, 1);
+    } else {
+      usedGenre.push(id);
+    }
 
-    // (async () => {
-    //   const getBooks = (): Promise<AxiosResponse<Book[]>> => {
-    //     return axios.create().get(`http://localhost:5000/api/books/?genre=${usedGenre}`);
-    //   };
-    //   const filtred = await getBooks();
-    //   console.log(filtred.data);
-    //   dispatch(putBooks(filtred.data));
-    // })();
+    dispatch(putGenr(usedGenre));
 
     console.log('SENDed Genres >>> ', usedGenre);
   };
@@ -71,46 +66,40 @@ const Filters: React.FC<Props> = (props) => {
   useEffect(() => {
     (async () => {
       try {
-        // const params = new URLSearchParams({ genre: genres, price: price, sort: sort });
+        // const params = new URLSearchParams({ genr, price, sort });
         const params = {
-          genre: usedGenre?.map((genre) => genre.isChecked === true),
+          genre,
           price,
           sort,
         };
-        console.log(params);
-        
+        console.log('Sended params >>> ', params);
         const filtred = await getBooks(params);
         dispatch(putBooks(filtred.data));
+        console.log('Filtred books >>> ', filtred.data);
       } catch (e: any) {
-        console.error('Error >>> ');
+        console.error('Error >>> ', e);
       }
     })();
-  }, [genres, price, sort]);
+  }, [genre, price, sort]);
 
-  const handlePrice = () => {
-
+  const handleChangePrice = ({ min, max }: { min: number; max: number }) => {
+    console.log(`min = ${min}, max = ${max}`);
+    // const paramPrice = new URLSearchParams({ price: `${min}, ${max}` });
+    const price = `${min}, ${max}`;
+    dispatch(putPrice(price));
   };
-
-  // (async () => {
-  //   const getBooks = (): Promise<AxiosResponse<Book[]>> => {
-  //     return axios.create().get('http://localhost:5000/api/books', { params });
-  //   };
-  //   const filtred = await getBooks();
-  //   console.log(filtred.data);
-  //   dispatch(putBooks(filtred.data));
-  // })();
-
 
   return (
     <Body>
       <Filter title="Genre">
-        {genres ? <div className="genre-list">
-          {genres.map((genre) =>
+        {loadGenre ? <div className="genre-list">
+          {loadGenre.map((genre) =>
             <Genres key={genre.id}>
               <input
                 type="checkbox"
                 className="checkbox"
-                checked={genre.isChecked}
+                checked={usedGenre.includes(`${genre.id}`)}
+                // checked={Object.values(loadGenre).includes(genre.id)}
                 onChange={handleSelect}
                 id={`${genre.id}`}
               />
@@ -124,13 +113,7 @@ const Filters: React.FC<Props> = (props) => {
         <Slider
           min={props.minPrice}
           max={props.maxPrice}
-
-          onChange={({ min, max }: { min: number; max: number }) => {
-            console.log(`min = ${min}, max = ${max}`);
-            // const paramPrice = new URLSearchParams({ price: `${min}, ${max}` });
-            dispatch(putPrice(`${min}, ${max}`));
-          }}
-
+          onChange={handleChangePrice}
         />
       </Filter>
       <Filter title="Sort by price" >

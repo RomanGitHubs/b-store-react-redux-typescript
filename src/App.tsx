@@ -15,6 +15,7 @@ import { getBooks } from './api/books';
 import { putUser } from './store/reducers/user';
 import Loader from './components/Loader';
 import { putBooks } from './store/reducers/book';
+import Book from './pages/Book';
 
 const App: React.FC = (props) => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,6 @@ const App: React.FC = (props) => {
     (async () => {
       try {
         const token = localStorage.getItem('token');
-
 
         if (!token) {
           setReady(true);
@@ -54,6 +54,7 @@ const App: React.FC = (props) => {
             <Route path='login' element={<Login />} />
             <Route path='signup' element={<Signup />} />
             <Route path='catalog' element={<Catalog />} />
+            <Route path='book' element={<Book />} />
             <Route path='profile' element={
               <RequireAuth>
                 <Profile />

@@ -3,28 +3,30 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Book } from '../models/book';
+import { useAppDispatch } from '../store/hooks';
 import { putBooks } from '../store/reducers/book';
-import { putSort } from '../store/reducers/sort';
+import { putSort } from '../store/reducers/filters';
 
 const Sort: React.FC = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handlerChange = (e: any) => {
     console.log(e.target.value);
     (async () => {
       try {
-        const getBooks = (): Promise<AxiosResponse<Book[]>> => {
-          return axios.create().get('http://localhost:5000/api/books', { params: { sort: e.target.value } });
-        };
-        const filtred = await getBooks();
-        console.log(filtred.data);
-        dispatch(putBooks(filtred.data));
+        // const getBooks = (): Promise<AxiosResponse<Book[]>> => {
+        //   return axios.create().get('http://localhost:5000/api/books', { params: { sort: e.target.value } });
+        // };
+        // const filtred = await getBooks();
+        // console.log(filtred.data);
+        // dispatch(putBooks(filtred.data));
         dispatch(putSort(e.target.value));
       } catch (e: any) {
         console.error('Error >>> ', e.response.data);
       }
     })();
   };
+
   return (
     <Body >
       <Filter className='filter'>

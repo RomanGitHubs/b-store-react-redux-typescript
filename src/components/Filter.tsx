@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import rightArrow from '../assets/right-arrow.svg';
-import downArrow from '../assets/down-arrow.svg';
 
 type Props = {
   title?: string;

@@ -11,6 +11,7 @@ import starFilled from '../assets/star-filled.svg';
 
 type Props = {
   key: number;
+  id: number;
   photo: string;
   title: string;
   author: string;
@@ -24,11 +25,18 @@ type Props = {
 
 const Book: React.FC<Props> = (props) => {
   const user = useAppSelector((state) => state.userSlice.user);
+  const bookId = props.id.toString();
 
   // const handleAddCart = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
   //   console.log(e.target);
   //   console.log('Added to cart');
   // };
+
+  const handleClick = (e: any) => {
+    console.log(e.target.id);
+
+  };
+
 
   return (
     <StyledContainer
@@ -41,7 +49,7 @@ const Book: React.FC<Props> = (props) => {
       star={star}
       starFilled={starFilled}
     >
-      <div className="book__cover">
+      <div className="book__cover" onClick={handleClick} id={bookId} >
         { user ? <button className="book__favorite"></button> : null }
         <div className="book__attributies">
           { props.news ? <img className='book__attributies-new' src={newBook}></img> : null}
@@ -145,7 +153,7 @@ const StyledContainer = styled.div<StylesProps>`
       border-radius: 16px;
       margin-bottom: 30px;
       position: relative;
-
+      cursor: pointer;
     }
     &__favorite{
       position: absolute;

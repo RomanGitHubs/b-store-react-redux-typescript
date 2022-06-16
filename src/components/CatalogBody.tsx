@@ -7,45 +7,24 @@ import { useAppSelector } from '../store/hooks';
 import { getBooks } from '../api/books';
 import { getGenres } from '../api/genres';
 import { putBooks } from '../store/reducers/book';
-import { putGenres } from '../store/reducers/genre';
+import { putGenr } from '../store/reducers/filters';
 import Loader from './Loader';
 import Pagination from './Pagination';
 
 type Props = {};
 
 const CatalogBody: React.FC<Props> = (props) => {
-  const dispatch = useDispatch();
-  const genres = useAppSelector((state) => state.genreSlice.genre);
-  const price = useAppSelector((state) => state.priceSlice.price);
-  const sort = useAppSelector((state) => state.sortSlice.sort);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const books = await getBooks({
-          genres: genres?.map((genre) => genre.isChecked === true),
-          price,
-          sort,
-        });
-        console.log(books.data);
-        dispatch(putBooks(books.data));
-      } catch (e: any) {
-        console.error('Error >>> ', e.response.data);
-      }
-    })();
-  }, []);
-
   const books = useAppSelector((state) => state.bookSlice.books);
-
   let minPrice = 0;
   let maxPrice = 0;
   const priceArray: number[] = [];
+
   if (books) {
     for (let i = 0; i < books.length; i++) {
       priceArray.push(Number(books[i].price * 100));
-      console.log(typeof (books[i].price));
+      // console.log(typeof (books[i].price));
     }
-    console.log(priceArray);
+    // console.log(priceArray);
     minPrice = Math.min(...priceArray);
     maxPrice = Math.max(...priceArray);
   }
@@ -61,6 +40,7 @@ const CatalogBody: React.FC<Props> = (props) => {
         {books.map((book) =>
           <Book
             key={book.id}
+            id={book.id}
             photo={book.photo}
             title={book.title}
             author={book.author}
@@ -73,7 +53,7 @@ const CatalogBody: React.FC<Props> = (props) => {
           />,
         )}
       </Content> : null }
-      {books ? <Pagination /> : null }
+      {/* {books ? <Pagination /> : null } */}
 
     </Body>
   );
