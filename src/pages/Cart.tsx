@@ -19,11 +19,8 @@ const Cart: React.FC<Props> = (props) => {
   );
 };
 
-export default Cart;
-
 const Body = styled.div`
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
   max-width: 1280px;
   margin: 150px calc((1.3% - 9px) * 8);
@@ -38,7 +35,6 @@ const Content = styled.div`
   font-size: 40px;
   line-height: 60px;
   color: #0D1821;
-  /* margin-top: 40px; */
   margin-left: 110px;
 `;
 
@@ -77,7 +73,6 @@ const Links = styled(Link)`
   min-width: 173px;
   cursor: pointer;
   background: #344966;
-
   text-align: center;
   border-radius: 16px;
   border: none;
@@ -92,3 +87,5 @@ const Links = styled(Link)`
   text-decoration: none;
   z-index: 3;
 `;
+
+export default Cart;

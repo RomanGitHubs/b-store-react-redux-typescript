@@ -12,7 +12,6 @@ const Book: React.FC<Props> = (props) => {
   const book = useAppSelector((state) => state.bookSlice.books);
 
   console.log(book);
-  
   return (
     <Body >
       <div>
@@ -25,10 +24,10 @@ const Book: React.FC<Props> = (props) => {
   );
 };
 
-export default Book;
-
 const Body = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 calc((1.3% - 9px) * 8);
 `;
+
+export default Book;

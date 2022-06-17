@@ -25,8 +25,6 @@ const AuthBanner:React.FC<Props> = (props) => {
   );
 };
 
-export default AuthBanner;
-
 const Body = styled.div`
   display: flex;
   width: 100%;
@@ -55,7 +53,6 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items:center;
-  // position: relative;
 `;
 
 const Image = styled.img`
@@ -64,8 +61,7 @@ const Image = styled.img`
   top: -62px;
   right: 0px;
   z-index: 2;
-  // width: 100%;
-  
+
 `;
 
 const TextArea = styled.div`
@@ -100,7 +96,6 @@ const Links = styled(Link)`
   min-width: 173px;
   cursor: pointer;
   background: #344966;
-
   text-align: center;
   border-radius: 16px;
   border: none;
@@ -114,6 +109,7 @@ const Links = styled(Link)`
   color: #F0F4EF;
   text-decoration: none;
   z-index: 3;
-
   margin-top: 50px;
 `;
+
+export default AuthBanner;

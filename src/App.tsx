@@ -9,12 +9,10 @@ import Profile from './pages/Profile';
 import Cart from './pages/Cart';
 import Header from './pages/Header';
 import Footer from './pages/Footer';
-import { useAppDispatch, useAppSelector } from './store/hooks';
+import { useAppDispatch } from './store/hooks';
 import { getUser } from './api/users';
-import { getBooks } from './api/books';
 import { putUser } from './store/reducers/user';
 import Loader from './components/Loader';
-import { putBooks } from './store/reducers/book';
 import Book from './pages/Book';
 
 const App: React.FC = (props) => {

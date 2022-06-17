@@ -1,5 +1,5 @@
 export type Genre = {
-  id?: number;
+  id: number;
   genre?: string;
   isChecked?: boolean;
 };

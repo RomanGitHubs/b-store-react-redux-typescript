@@ -17,14 +17,17 @@ const FormUserField: React.FC<Props> = (props) => {
       <img className="form__logo" src={props.src}/>
       <InputWrapper>
         <Label>{props.label}</Label>
-        <Input type={props.type} placeholder={props.placeholder}
-          onChange={props.onChange} value={props.value} disabled={props.disabled}/>
+        <Input
+          type={props.type}
+          placeholder={props.placeholder}
+          onChange={props.onChange}
+          value={props.value}
+          disabled={props.disabled}
+        />
       </InputWrapper>
     </FormField>
   );
 };
-
-export default FormUserField;
 
 const FormField = styled.div`
   display: flex;
@@ -38,21 +41,11 @@ const FormField = styled.div`
     &__logo {
       width: 24px;
       height: 24px;
-
       margin-top: 20px;
       margin-left:24px;
       margin-right: 16px;
     }
   }
-`;
-
-const FormIco = styled.img`
-  width: 24px;
-  height: 24px;
-
-  margin-top: 20px;
-  margin-left:24px;
-  margin-right: 16px;
 `;
 
 const InputWrapper = styled.div`
@@ -67,7 +60,6 @@ const Input = styled.input`
     background: #F0F4EF;
     border-radius: 16px;
     border: none;
-    /* padding: 18px 18px 18px 64px; */
     outline: none;
     align-items: center;
 
@@ -93,3 +85,5 @@ const Label = styled.label`
     color: #344966;
     margin-top: 6px;
 `;
+
+export default FormUserField;

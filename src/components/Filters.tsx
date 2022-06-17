@@ -1,19 +1,15 @@
-import React, { Children, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { getGenres } from '../api/genres';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { putGenr, putPrice } from '../store/reducers/filters';
+import { putGenr, putPrice, putBooks } from '../store/reducers/book';
 import Filter from './Filter';
 import { Genre } from '../models/genre';
-import { putBooks } from '../store/reducers/book';
 import Slider from './Slider';
 import SortFilter from './SortFilter';
 import emptyChBox from '../assets/checkbox-empty.svg';
 import fillChBox from '../assets/checkbox-checked.svg';
 import { getBooks } from '../api/books';
-import { Book } from '../models/book';
 
 type Props = {
   minPrice: number;
@@ -22,11 +18,19 @@ type Props = {
 
 const Filters: React.FC<Props> = (props) => {
   const dispatch = useAppDispatch();
-  const [loadGenre, setLoadGenre] = useState<Genre[]>([]);
+  const [loadedGenres, setLoadGenre] = useState<Genre[]>([]);
 
-  const usedGenre: string[] = [];
+  const {
+    selectedGenres,
+    selectedMinPrice,
+    selectedMaxPrice,
+    selectedSort,
+  } = useAppSelector((state) => state.bookSlice);
 
-  const { genre, price, sort } = useAppSelector((state) => state.filterSlice);
+  const {
+    minPrice,
+    maxPrice,
+  } = useAppSelector((state) => state.bookSlice);
 
   useEffect(() => {
     (async () => {
@@ -35,7 +39,7 @@ const Filters: React.FC<Props> = (props) => {
         console.log('Load Genres >>> ', genres.data);
 
         setLoadGenre(genres.data);
-        console.log('Load Genres >>> ', loadGenre);
+        console.log('Load Genres >>> ', loadedGenres);
         // dispatch(putGenres(genres.data));
       } catch (e: any) {
         console.error('Error >>> ', e.response.data);
@@ -43,87 +47,88 @@ const Filters: React.FC<Props> = (props) => {
     })();
   }, []);
 
-  const handleSelect: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    e.stopPropagation();
-
-    const id = e.target.id;
-    console.log('TARGET ID >>> ', id);
-    console.log('PRE SENDed Genres >>> ', usedGenre);
-
-    if (usedGenre.includes(id)) {
-      const find = usedGenre.findIndex((item) => item === id);
-      console.log('Find >>> ', find);
-      usedGenre.splice(find, 1);
+  const handleSelectGenre = (genre: Genre) => {
+    const tempArray = selectedGenres.slice();
+    const findIndex = tempArray.findIndex((item) => item === genre.id);
+    if (tempArray[findIndex]) {
+      console.log('Find >>> ', findIndex);
+      tempArray.splice(findIndex, 1);
     } else {
-      usedGenre.push(id);
+      tempArray.push(genre.id);
     }
 
-    dispatch(putGenr(usedGenre));
+    dispatch(putGenr(tempArray));
 
-    console.log('SENDed Genres >>> ', usedGenre);
+    console.log('SENDed Genres >>> ', tempArray);
   };
 
   useEffect(() => {
     (async () => {
       try {
-        // const params = new URLSearchParams({ genr, price, sort });
         const params = {
-          genre,
-          price,
-          sort,
+          genre: selectedGenres,
+          minPrice: selectedMinPrice,
+          maxPrice: selectedMaxPrice,
+          sort: selectedSort,
         };
         console.log('Sended params >>> ', params);
         const filtred = await getBooks(params);
         dispatch(putBooks(filtred.data));
-        console.log('Filtred books >>> ', filtred.data);
+
+        console.log('Filtred books >>> ', filtred.data.books);
       } catch (e: any) {
         console.error('Error >>> ', e);
       }
     })();
-  }, [genre, price, sort]);
+  }, [selectedGenres, selectedMinPrice, selectedMaxPrice, selectedSort]);
 
   const handleChangePrice = ({ min, max }: { min: number; max: number }) => {
     console.log(`min = ${min}, max = ${max}`);
-    // const paramPrice = new URLSearchParams({ price: `${min}, ${max}` });
-    const price = `${min}, ${max}`;
+    const price = {
+      min: min / 100,
+      max: max / 100,
+    };
     dispatch(putPrice(price));
   };
 
   return (
     <Body>
       <Filter title="Genre">
-        {loadGenre ? <div className="genre-list">
-          {loadGenre.map((genre) =>
-            <Genres key={genre.id}>
-              <input
-                type="checkbox"
-                className="checkbox"
-                checked={usedGenre.includes(`${genre.id}`)}
-                // checked={Object.values(loadGenre).includes(genre.id)}
-                onChange={handleSelect}
-                id={`${genre.id}`}
-              />
-              <span className="fake-checkbox"></span>{genre.genre}
-            </Genres>)
-          }
-        </div> : null}
+        {loadedGenres && (
+          <div className="genre-list">
+            {loadedGenres.map((genre) => (
+              <Genres key={genre.id}>
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={selectedGenres.includes(genre.id)}
+                  onChange={() => {
+                    handleSelectGenre(genre);
+                  }}
+                />
+
+                <span className="fake-checkbox" />
+
+                {genre.genre}
+              </Genres>
+            ))}
+          </div>
+        )}
       </Filter>
 
-      <Filter title="Price" >
+      <Filter title="Price">
         <Slider
-          min={props.minPrice}
-          max={props.maxPrice}
+          min={minPrice}
+          max={maxPrice}
           onChange={handleChangePrice}
         />
       </Filter>
-      <Filter title="Sort by price" >
+      <Filter title='Sort by' sort={selectedSort}>
         <SortFilter />
       </Filter>
     </Body>
   );
 };
-
-export default Filters;
 
 const Body = styled.div`
   display: flex;
@@ -153,10 +158,10 @@ const Body = styled.div`
     border-radius: 20px;
   }
   .checkbox:checked + label:before {
-      content: "x";
-    }
-
+    content: "x";
+  }
 `;
+
 const Genres = styled.label`
   display: flex;
   width: 275px;
@@ -220,5 +225,6 @@ const Genres = styled.label`
       outline:  #34496624 solid 5px;
       border-radius: 20px;
   }
-
 `;
+
+export default Filters;

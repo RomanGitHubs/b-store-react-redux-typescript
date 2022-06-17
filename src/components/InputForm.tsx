@@ -27,8 +27,6 @@ const InputForm: React.FC<Props> = (props) => {
   );
 };
 
-export default InputForm;
-
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,7 +40,6 @@ const InputWrapper = styled.div`
   display: flex;
   position: relative;
   width: 100%;
-  // width: 413px;
 `;
 
 const FormIco = styled.img`
@@ -89,3 +86,5 @@ const InputLabel = styled.label`
   color: #344966;
   margin-top: 9px;
 `;
+
+export default InputForm;

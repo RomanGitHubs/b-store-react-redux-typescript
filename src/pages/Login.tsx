@@ -74,7 +74,7 @@ const Login: React.FC<Props> = (props) => {
       const response = await loginUser(data);
       dispatch(putUser(response.data.user));
       console.log('RESPONSE', response);
-      
+
       navigate(from.from.pathname, { replace: true });
     } catch (e: any) {
       console.error('Error >>> ', e.response.data);
@@ -135,8 +135,6 @@ const Login: React.FC<Props> = (props) => {
   );
 };
 
-export default Login;
-
 type StylesProps = {
   errorState?: boolean;
 }
@@ -189,7 +187,6 @@ const Button = styled.button`
   cursor: pointer;
   background: #344966;
   margin-top: 60px;
-
   text-align: center;
   border-radius: 16px;
   border: none;
@@ -217,7 +214,6 @@ const InputWrapper = styled.div<StylesProps>`
   display: flex;
   position: relative;
   width: 100%;
-  // width: 413px;
 
   .form__input{
     ${(p) => {
@@ -251,7 +247,6 @@ const InputWrapper = styled.div<StylesProps>`
   :focus {
     border: 2px solid #3d5475;
   }
-
 }
 `;
 
@@ -262,27 +257,6 @@ const FormIco = styled.img`
   z-index: 2;
   top: 18px;
   left:24px;
-`;
-
-const Input = styled.input`
-  position: relative;
-  width: 100%;
-  height: 24px;
-  display: flex;
-  background: #F0F4EF;
-  border-radius: 16px;
-  border: none;
-  padding: 18px 18px 18px 64px;
-  outline: none;
-  align-items: center;
-
-  font-family: 'Poppins', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 28px;
-  letter-spacing: 0.75px;
-  color: black;
 `;
 
 const InputLabel = styled.label`
@@ -311,3 +285,5 @@ const ErrMessage = styled.p`
   color: #C30052;
   margin: 0;
 `;
+
+export default Login;

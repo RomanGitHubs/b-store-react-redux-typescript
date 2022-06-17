@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import AuthBanner from '../components/AuthBanner';
 import CatalogBody from '../components/CatalogBody';
-import Pagination from '../components/Pagination';
 import { useAppSelector } from '../store/hooks';
 
 type Props = {};
@@ -18,10 +17,10 @@ const Catalog: React.FC<Props> = (props) => {
   );
 };
 
-export default Catalog;
-
 const Body = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 calc((1.3% - 9px) * 8);
 `;
+
+export default Catalog;

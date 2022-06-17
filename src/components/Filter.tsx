@@ -5,7 +5,8 @@ import rightArrow from '../assets/right-arrow.svg';
 type Props = {
   title?: string;
   onClick?: (e: any) => Event;
-  children?: React.ReactNode
+  children?: React.ReactNode,
+  sort?: string,
 };
 
 const Filter: React.FC<Props> = (props) => {
@@ -18,7 +19,7 @@ const Filter: React.FC<Props> = (props) => {
   return (
     <Body >
       <div className="title" onClick={toggleOpenState}>
-        {props.title}
+        {props.title} {props.sort}
         <img src={rightArrow}></img>
       </div>
       {isOpen && <div>
@@ -27,8 +28,6 @@ const Filter: React.FC<Props> = (props) => {
     </Body>
   );
 };
-
-export default Filter;
 
 const Body = styled.div`
   display: flex;
@@ -62,3 +61,5 @@ const Body = styled.div`
     justify-content: space-between;
   }
 `;
+
+export default Filter;

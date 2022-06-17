@@ -5,7 +5,6 @@ import bannerGirl from '../assets/banner-girl.png';
 
 type Props = {};
 
-
 const Banner:React.FC<Props> = (props) => {
   return (
     <Body>
@@ -16,14 +15,12 @@ const Banner:React.FC<Props> = (props) => {
           <Text>Buy two books and<br/>get one for free</Text>
           <Links to='/catalog'>Choose a book</Links>
         </TextArea>
-        <Image src={bannerGirl} />
+        <img src={bannerGirl} />
       </Content>
 
     </Body>
   );
 };
-
-export default Banner;
 
 const Body = styled.div`
   display: flex;
@@ -94,7 +91,6 @@ const Links = styled(Link)`
   min-width: 173px;
   cursor: pointer;
   background: #344966;
-
   text-align: center;
   border-radius: 16px;
   border: none;
@@ -108,10 +104,7 @@ const Links = styled(Link)`
   color: #F0F4EF;
   text-decoration: none;
   z-index: 3;
-
   margin-top: 50px;
 `;
 
-const Image = styled.img`
-
-`;
+export default Banner;

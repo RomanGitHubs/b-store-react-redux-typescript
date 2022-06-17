@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { useAppSelector } from '../store/hooks';
 import Button from './Button';
@@ -34,9 +34,7 @@ const Book: React.FC<Props> = (props) => {
 
   const handleClick = (e: any) => {
     console.log(e.target.id);
-
   };
-
 
   return (
     <StyledContainer
@@ -187,8 +185,6 @@ const StyledContainer = styled.div<StylesProps>`
       bottom: 20px;
       left: 20px;
       justify-content: flex-end;
-      
-
       &-new{
         width: 132px;
         height: 30px;
@@ -264,9 +260,6 @@ const StyledContainer = styled.div<StylesProps>`
       }
     }
   }
-
-
-
 /* 
       ${(p) => {
     if (p.isVisible) {

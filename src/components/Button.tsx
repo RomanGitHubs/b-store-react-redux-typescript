@@ -22,6 +22,7 @@ const Button: React.FC<Props> = (props) => {
 type StylesProps = {
   type?: ButtonTypes;
 }
+
 const Body = styled.div<StylesProps>`
   display: flex;
   justify-content: center;
@@ -64,7 +65,6 @@ const Body = styled.div<StylesProps>`
       return css``;
     }
   }}
-  
-  `;
+`;
 
 export default Button;

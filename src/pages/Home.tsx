@@ -22,8 +22,8 @@ const Home: React.FC<Props> = (props) => {
   );
 };
 
-export default Home;
-
 const Body = styled.div`
   margin: 40px calc((1.3% - 9px) * 8) 150px;
 `;
+
+export default Home;

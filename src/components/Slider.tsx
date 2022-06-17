@@ -27,6 +27,8 @@ const Slider: FC<MultiRangeSliderProps> = ({
   const maxValRef = useRef<HTMLInputElement>(null);
   const range = useRef<HTMLDivElement>(null);
 
+  const { selectedMinPrice, selectedMaxPrice } = useAppSelector((state) => state.bookSlice);
+
   // Convert to percentage
   const getPercent = useCallback(
     (value: number) => Math.round(((value - min) / (max - min)) * 100),

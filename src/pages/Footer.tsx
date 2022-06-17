@@ -30,8 +30,6 @@ const Footer: React.FC<Props> = (props) => {
   );
 };
 
-export default Footer;
-
 const FooterWrapper = styled.footer`
   background-color: #0D1821;
   margin-top: auto;
@@ -59,7 +57,7 @@ const Logo = styled(Link)`
   width: 89px;
   height: 46px;
   margin-bottom: 40px;
-  background-image: url(${logo})
+  background-image: url(${logo});
 `;
 
 const Paragraph = styled.p`
@@ -92,3 +90,5 @@ const Links = styled(Link)`
   text-decoration: none;
   width: 120px;
 `;
+
+export default Footer;

@@ -58,8 +58,6 @@ const Header: React.FC<Props> = (props) => {
   );
 };
 
-export default Header;
-
 const Head = styled.header`
   display: flex;
   justify-content: space-between;
@@ -138,7 +136,6 @@ const Links = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   width: 231px;
   min-width: 210px;
   margin-left: 51px; 
@@ -152,7 +149,6 @@ const LinkLog = styled(Link)`
   height: 44px;
   cursor: pointer;
   background: #344966;
-
   text-align: center;
   border-radius: 16px;
   border: none;
@@ -211,3 +207,5 @@ const LinkUser = styled(Link)`
   width: 48px;
   height: 48px;
 `;
+
+export default Header;

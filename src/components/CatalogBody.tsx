@@ -1,33 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
 import Book from './Book';
 import Filters from './Filters';
 import { useAppSelector } from '../store/hooks';
-import { getBooks } from '../api/books';
-import { getGenres } from '../api/genres';
-import { putBooks } from '../store/reducers/book';
-import { putGenr } from '../store/reducers/filters';
-import Loader from './Loader';
-import Pagination from './Pagination';
 
 type Props = {};
 
 const CatalogBody: React.FC<Props> = (props) => {
-  const books = useAppSelector((state) => state.bookSlice.books);
-  let minPrice = 0;
-  let maxPrice = 0;
-  const priceArray: number[] = [];
-
-  if (books) {
-    for (let i = 0; i < books.length; i++) {
-      priceArray.push(Number(books[i].price * 100));
-      // console.log(typeof (books[i].price));
-    }
-    // console.log(priceArray);
-    minPrice = Math.min(...priceArray);
-    maxPrice = Math.max(...priceArray);
-  }
+  const { books, minPrice, maxPrice } = useAppSelector((state) => state.bookSlice);
 
   return (
     <Body >
@@ -53,13 +33,9 @@ const CatalogBody: React.FC<Props> = (props) => {
           />,
         )}
       </Content> : null }
-      {/* {books ? <Pagination /> : null } */}
-
     </Body>
   );
 };
-
-export default CatalogBody;
 
 const Body = styled.div`
   display: flex;
@@ -98,3 +74,5 @@ const Content = styled.div`
   align-items: center;
   margin-top: 40px;
 `;
+
+export default CatalogBody;
