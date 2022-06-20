@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthBanner from '../components/AuthBanner';
 import CatalogBody from '../components/CatalogBody';
@@ -9,9 +10,18 @@ type Props = {};
 
 const Book: React.FC<Props> = (props) => {
   const user = useAppSelector((state) => state.userSlice.user);
-  const book = useAppSelector((state) => state.bookSlice.books);
+  const books = useAppSelector((state) => state.bookSlice.books);
 
-  console.log(book);
+  const navigate = useNavigate();
+  const params = useParams();
+  console.log('Params', params);
+
+  // const paramsId = parseInt(params.bookId, 10);
+  // console.log('Params', paramsId);
+  // const book = books?.map((item) => item.id === paramsId);
+
+  // console.log(book);
+
   return (
     <Body >
       <div>

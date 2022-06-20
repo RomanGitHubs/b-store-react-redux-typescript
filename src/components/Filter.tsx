@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import rightArrow from '../assets/right-arrow.svg';
+import downArrow from '../assets/down-arrow.svg';
 
 type Props = {
   title?: string;
@@ -20,7 +21,7 @@ const Filter: React.FC<Props> = (props) => {
     <Body >
       <div className="title" onClick={toggleOpenState}>
         {props.title} {props.sort}
-        <img src={rightArrow}></img>
+        <img src={isOpen ? downArrow : rightArrow}></img>
       </div>
       {isOpen && <div>
         {props.children}

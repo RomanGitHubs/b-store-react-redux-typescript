@@ -8,6 +8,7 @@ import newBook from '../assets/new-book.png';
 import bestsellerBook from '../assets/bestseller-book.png';
 import star from '../assets/star.svg';
 import starFilled from '../assets/star-filled.svg';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   key: number;
@@ -26,6 +27,7 @@ type Props = {
 const Book: React.FC<Props> = (props) => {
   const user = useAppSelector((state) => state.userSlice.user);
   const bookId = props.id.toString();
+  const navigate = useNavigate();
 
   // const handleAddCart = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
   //   console.log(e.target);
@@ -33,7 +35,9 @@ const Book: React.FC<Props> = (props) => {
   // };
 
   const handleClick = (e: any) => {
+    const id = e.target.id;
     console.log(e.target.id);
+    navigate(`/catalog/${id}`);
   };
 
   return (
@@ -139,7 +143,7 @@ const StyledContainer = styled.div<StylesProps>`
   display: flex;
   flex-direction: column;
   width: 305px;
-  height: 663px;
+  height: 713px;
 
   .book {
     &__cover {

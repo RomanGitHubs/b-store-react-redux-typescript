@@ -16,23 +16,25 @@ const CatalogBody: React.FC<Props> = (props) => {
         <Filters minPrice={minPrice} maxPrice={maxPrice}/>
 
       </Header>
-      {books ? <Content>
-        {books.map((book) =>
-          <Book
-            key={book.id}
-            id={book.id}
-            photo={book.photo}
-            title={book.title}
-            author={book.author}
-            rating={book.rating}
-            price={book.price}
-            news={book.news}
-            bestsaller={book.bestsaller}
-            isFavorite={book.isFavorite}
-            available={book.available}
-          />,
-        )}
-      </Content> : null }
+      <Container>
+        { (books !== null && books.length > 0) ? <Content>
+          {books.map((book) =>
+            <Book
+              key={book.id}
+              id={book.id}
+              photo={book.photo}
+              title={book.title}
+              author={book.author}
+              rating={book.rating}
+              price={book.price}
+              news={book.news}
+              bestsaller={book.bestsaller}
+              isFavorite={book.isFavorite}
+              available={book.available}
+            />,
+          )}
+        </Content> : <EmptyCatalog>Empty</EmptyCatalog> }
+      </Container>
     </Body>
   );
 };
@@ -61,6 +63,12 @@ const Title = styled.h2`
   margin: 0;
 `;
 
+const Container = styled.div`
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+`;
+
 const Content = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -71,8 +79,17 @@ const Content = styled.div`
   font-size: 40px;
   line-height: 60px;
   color: #0D1821;
-  align-items: center;
-  margin-top: 40px;
+`;
+
+const EmptyCatalog = styled.div`
+  display: flex;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 60px;
+  color: #0D1821;
+  margin: 100px auto 100px;
 `;
 
 export default CatalogBody;

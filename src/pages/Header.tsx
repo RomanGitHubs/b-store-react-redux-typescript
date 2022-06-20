@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -64,6 +64,8 @@ const Head = styled.header`
   margin-top: 24px;
   margin-left: calc((1.3% - 9px) * 8);
   margin-right: calc((1.3% - 9px) * 8);
+  /* margin-right: auto;
+  margin-left: auto; */
   align-items: center;
 `;
 

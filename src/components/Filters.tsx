@@ -10,6 +10,7 @@ import SortFilter from './SortFilter';
 import emptyChBox from '../assets/checkbox-empty.svg';
 import fillChBox from '../assets/checkbox-checked.svg';
 import { getBooks } from '../api/books';
+import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   minPrice: number;
@@ -90,6 +91,9 @@ const Filters: React.FC<Props> = (props) => {
     };
     dispatch(putPrice(price));
   };
+
+  let [searchParams, setSearchParams] = useSearchParams();
+
 
   return (
     <Body>
