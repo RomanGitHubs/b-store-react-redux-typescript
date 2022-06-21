@@ -57,6 +57,7 @@ const Content = styled.div`
 const TextArea = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 25px;
 `;
 
 const Title = styled.h2`

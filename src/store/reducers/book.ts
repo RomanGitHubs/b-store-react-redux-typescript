@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type } from 'os';
 import { Book } from '../../models/book';
 import { Pagination } from '../../models/pagination';
 
@@ -11,6 +12,7 @@ type InitialState = {
   selectedMinPrice: number;
   selectedMaxPrice: number;
   selectedSort: string;
+  selectedOrder: string;
 }
 
 const initialState: InitialState = {
@@ -22,6 +24,7 @@ const initialState: InitialState = {
   selectedMinPrice: 0,
   selectedMaxPrice: 100000,
   selectedSort: 'rating',
+  selectedOrder: 'DESC',
 };
 
 type Books = {
@@ -57,9 +60,12 @@ const book = createSlice({
     putSort(state, action: PayloadAction<string>) {
       state.selectedSort = action.payload;
     },
+    putOrder(state, action: PayloadAction<string>) {
+      state.selectedOrder = action.payload;
+    },
   },
 
 });
 
-export const { putBooks, putPagination, putGenr, putPrice, putSort } = book.actions;
+export const { putBooks, putPagination, putGenr, putPrice, putSort, putOrder } = book.actions;
 export default book.reducer;

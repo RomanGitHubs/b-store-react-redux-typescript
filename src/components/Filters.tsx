@@ -26,6 +26,7 @@ const Filters: React.FC<Props> = (props) => {
     selectedMinPrice,
     selectedMaxPrice,
     selectedSort,
+    selectedOrder,
   } = useAppSelector((state) => state.bookSlice);
 
   const {
@@ -71,6 +72,7 @@ const Filters: React.FC<Props> = (props) => {
           minPrice: selectedMinPrice,
           maxPrice: selectedMaxPrice,
           sort: selectedSort,
+          order: selectedOrder,
         };
         console.log('Sended params >>> ', params);
         const filtred = await getBooks(params);
@@ -81,7 +83,7 @@ const Filters: React.FC<Props> = (props) => {
         console.error('Error >>> ', e);
       }
     })();
-  }, [selectedGenres, selectedMinPrice, selectedMaxPrice, selectedSort]);
+  }, [selectedGenres, selectedMinPrice, selectedMaxPrice, selectedSort, selectedOrder]);
 
   const handleChangePrice = ({ min, max }: { min: number; max: number }) => {
     console.log(`min = ${min}, max = ${max}`);

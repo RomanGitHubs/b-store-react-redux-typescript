@@ -8,7 +8,7 @@ import { useAppSelector } from '../store/hooks';
 
 type Props = {};
 
-const Book: React.FC<Props> = (props) => {
+const OneBook: React.FC<Props> = (props) => {
   const user = useAppSelector((state) => state.userSlice.user);
   const books = useAppSelector((state) => state.bookSlice.books);
 
@@ -40,4 +40,4 @@ const Body = styled.div`
   margin: 0 calc((1.3% - 9px) * 8);
 `;
 
-export default Book;
+export default OneBook;

@@ -15,7 +15,7 @@ import { useAppDispatch } from './store/hooks';
 import { getUser } from './api/users';
 import { putUser } from './store/reducers/user';
 import Loader from './components/Loader';
-import Book from './pages/OneBook';
+import OneBook from './pages/OneBook';
 
 const App: React.FC = (props) => {
   const dispatch = useAppDispatch();
@@ -44,7 +44,6 @@ const App: React.FC = (props) => {
   }, []);
 
   return (
-
     <AppBody>
       {ready
         ? (<>
@@ -55,7 +54,7 @@ const App: React.FC = (props) => {
             <Route path='login' element={<Login />} />
             <Route path='signup' element={<Signup />} />
             <Route path='catalog' element={<Catalog />}>
-              <Route path=':bookId' element={<Book />} />
+              <Route path=':bookId' element={<OneBook />} />
             </Route>
             <Route path='profile' element={
               <RequireAuth>
@@ -81,6 +80,6 @@ export default App;
 const AppBody = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 1440px;
   margin: 0 auto;
+  max-width: 1440px;
 `;

@@ -1,25 +1,23 @@
-// import React, { useState, useEffect } from 'react';
-
-// export function useScreenSize() {
-//   const hi = document.documentElement.clientHeight;
-//   const wi = document.documentElement.clientWidth;
-
-//   const [heidthPos, setHeigthPos] = useState(hi);
-//   const [widthPos, setWidthPos] = useState(wi);
-
-//   useEffect(() => {
-//     setHeigthPos(document.documentElement.clientHeight);
-//     setWidthPos(document.documentElement.clientWidth);
-//   });
-
-//   return [heidthPos, widthPos];
-// }
-
 import { useState, useEffect } from 'react';
 
-export function useScreenSize() {
-  const height = document.documentElement.clientHeight;
-  const width = document.documentElement.clientWidth;
+const initialHeight = document.documentElement.clientHeight;
+const initialWidth = document.documentElement.clientWidth;
 
-  return [height, width];
+export function useScreenSize() {
+  const [heidthPos, setHeigthPos] = useState(initialHeight);
+  const [widthPos, setWidthPos] = useState(initialWidth);
+
+  useEffect(() => {
+    const foo = () => {
+      setHeigthPos(document.documentElement.clientHeight);
+      setWidthPos(document.documentElement.clientWidth);
+    };
+
+    window.addEventListener('resize', foo);
+    return () => {
+      window.removeEventListener('resize', foo);
+    };
+  }, []);
+
+  return [heidthPos, widthPos];
 }
